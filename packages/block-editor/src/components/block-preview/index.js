@@ -34,6 +34,8 @@ function ScaledBlockPreview( { blocks, viewportWidth, onReady } ) {
 				return;
 			}
 
+			let scale, position;
+
 			// If we're previewing a single block, scale the preview to fit it.
 			if ( blocks.length === 1 ) {
 				const block = blocks[ 0 ];
@@ -45,31 +47,25 @@ function ScaledBlockPreview( { blocks, viewportWidth, onReady } ) {
 				const containerElementRect = containerElement.getBoundingClientRect();
 				const scaledElementRect = previewElement.getBoundingClientRect();
 
-				const scale = containerElementRect.width / scaledElementRect.width || 1;
+				scale = containerElementRect.width / scaledElementRect.width || 1;
 				const offsetX = scaledElementRect.left - containerElementRect.left;
 				const offsetY = ( containerElementRect.height > scaledElementRect.height * scale ) ?
 					( containerElementRect.height - ( scaledElementRect.height * scale ) ) / 2 : 0;
-				const position = { x: offsetX * scale, y: offsetY };
+				position = { x: offsetX * scale, y: offsetY };
 
 				setPreviewScale( scale );
 				setPosition( position );
 
 				// Hack: we need  to reset the scaled elements margins
 				previewElement.style.marginTop = '0';
-
-				onReady( {
-					scale,
-					position,
-					previewContainerRef: previewRef,
-				} );
 			} else {
 				const containerElementRect = containerElement.getBoundingClientRect();
-				const scale = containerElementRect.width / viewportWidth;
+				scale = containerElementRect.width / viewportWidth;
 				setPreviewScale( scale );
-				onReady( { scale, previewContainerRef: previewRef } );
 			}
 
 			setIsReady( true );
+			onReady( { scale, previewContainerRef: previewRef, position } );
 		}, 100 );
 
 		// Cleanup
