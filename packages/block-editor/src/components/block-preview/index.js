@@ -18,7 +18,7 @@ import BlockEditorProvider from '../provider';
 import BlockList from '../block-list';
 import { getBlockPreviewContainerDOMNode } from '../../utils/dom';
 
-function ScaledBlockPreview( { blocks, viewportWidth, __experimentalOnReady } ) {
+function ScaledBlockPreview( { blocks, viewportWidth, onReady } ) {
 	const previewRef = useRef( null );
 
 	const [ isReady, setIsReady ] = useState( false );
@@ -57,7 +57,7 @@ function ScaledBlockPreview( { blocks, viewportWidth, __experimentalOnReady } ) 
 				// Hack: we need  to reset the scaled elements margins
 				previewElement.style.marginTop = '0';
 
-				__experimentalOnReady( {
+				onReady( {
 					scale,
 					position,
 					previewContainerRef: previewRef,
@@ -66,7 +66,7 @@ function ScaledBlockPreview( { blocks, viewportWidth, __experimentalOnReady } ) 
 				const containerElementRect = containerElement.getBoundingClientRect();
 				const scale = containerElementRect.width / viewportWidth;
 				setPreviewScale( scale );
-				__experimentalOnReady( { scale, previewContainerRef: previewRef } );
+				onReady( { scale, previewContainerRef: previewRef } );
 			}
 
 			setIsReady( true );
@@ -127,7 +127,7 @@ export function BlockPreview( { blocks, viewportWidth = 700, settings, __experim
 				key={ recompute }
 				blocks={ renderedBlocks }
 				viewportWidth={ viewportWidth }
-				__experimentalOnReady={ __experimentalOnReady }
+				onReady={ __experimentalOnReady }
 			/>
 		</BlockEditorProvider>
 	);
