@@ -18,6 +18,14 @@ import BlockEditorProvider from '../provider';
 import BlockList from '../block-list';
 import { getBlockPreviewContainerDOMNode } from '../../utils/dom';
 
+const getOnlineStyles = ( scale, x, y, isReady, width ) => ( {
+	transform: `scale(${ scale })`,
+	visibility: isReady ? 'visible' : 'hidden',
+	left: -x,
+	top: y,
+	width,
+} );
+
 function ScaledBlockPreview( { blocks, viewportWidth, onReady } ) {
 	const previewRef = useRef( null );
 
@@ -65,7 +73,12 @@ function ScaledBlockPreview( { blocks, viewportWidth, onReady } ) {
 			}
 
 			setIsReady( true );
-			onReady( { scale, previewContainerRef: previewRef, position } );
+			onReady( {
+				scale,
+				position,
+				previewContainerRef: previewRef,
+				styles: getOnlineStyles( scale, position.x, position.y, true, viewportWidth ),
+			} );
 		}, 100 );
 
 		// Cleanup
@@ -80,13 +93,7 @@ function ScaledBlockPreview( { blocks, viewportWidth, onReady } ) {
 		return null;
 	}
 
-	const previewStyles = {
-		transform: `scale(${ previewScale })`,
-		visibility: isReady ? 'visible' : 'hidden',
-		left: -x,
-		top: y,
-		width: viewportWidth,
-	};
+	const previewStyles = getOnlineStyles( previewScale, x, y, isReady, viewportWidth );
 
 	return (
 		<div
