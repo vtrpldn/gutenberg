@@ -59,13 +59,13 @@ function ScaledBlockPreview( { blocks, viewportWidth, __experimentalOnReady } ) 
 				__experimentalOnReady( {
 					scale,
 					position: { x: offsetX * scale, y: offsetY },
-					ref: previewRef,
+					previewContainerRef: previewRef,
 				} );
 			} else {
 				const containerElementRect = containerElement.getBoundingClientRect();
 				const scale = containerElementRect.width / viewportWidth;
 				setPreviewScale( scale );
-				__experimentalOnReady( { scale, ref: previewRef } );
+				__experimentalOnReady( { scale, previewContainerRef: previewRef } );
 			}
 
 			setIsReady( true );
