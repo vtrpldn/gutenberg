@@ -49,16 +49,17 @@ function ScaledBlockPreview( { blocks, viewportWidth, __experimentalOnReady } ) 
 				const offsetX = scaledElementRect.left - containerElementRect.left;
 				const offsetY = ( containerElementRect.height > scaledElementRect.height * scale ) ?
 					( containerElementRect.height - ( scaledElementRect.height * scale ) ) / 2 : 0;
+				const position = { x: offsetX * scale, y: offsetY };
 
 				setPreviewScale( scale );
-				setPosition( { x: offsetX * scale, y: offsetY } );
+				setPosition( position );
 
 				// Hack: we need  to reset the scaled elements margins
 				previewElement.style.marginTop = '0';
 
 				__experimentalOnReady( {
 					scale,
-					position: { x: offsetX * scale, y: offsetY },
+					position,
 					previewContainerRef: previewRef,
 				} );
 			} else {
