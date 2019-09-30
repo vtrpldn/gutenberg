@@ -18,7 +18,7 @@ import BlockEditorProvider from '../provider';
 import BlockList from '../block-list';
 import { getBlockPreviewContainerDOMNode } from '../../utils/dom';
 
-const getOnlineStyles = ( scale, x, y, isReady, width ) => ( {
+const getInlineStyles = ( scale, x, y, isReady, width ) => ( {
 	transform: `scale(${ scale })`,
 	visibility: isReady ? 'visible' : 'hidden',
 	left: -x,
@@ -26,7 +26,7 @@ const getOnlineStyles = ( scale, x, y, isReady, width ) => ( {
 	width,
 } );
 
-function ScaledBlockPreview( { blocks, viewportWidth, onReady, delay } ) {
+function ScaledBlockPreview( { blocks, viewportWidth, onReady, scalingDelay } ) {
 	const previewRef = useRef( null );
 
 	const [ isReady, setIsReady ] = useState( false );
@@ -79,9 +79,9 @@ function ScaledBlockPreview( { blocks, viewportWidth, onReady, delay } ) {
 				scale,
 				position: { x: _x, y: _y },
 				previewContainerRef: previewRef,
-				styles: getOnlineStyles( scale, _x, _y, true, viewportWidth ),
+				inlineStyles: getInlineStyles( scale, _x, _y, true, viewportWidth ),
 			} );
-		}, delay );
+		}, scalingDelay );
 
 		// Cleanup
 		return () => {
@@ -95,7 +95,7 @@ function ScaledBlockPreview( { blocks, viewportWidth, onReady, delay } ) {
 		return null;
 	}
 
-	const previewStyles = getOnlineStyles( previewScale, x, y, isReady, viewportWidth );
+	const previewStyles = getInlineStyles( previewScale, x, y, isReady, viewportWidth );
 
 	return (
 		<div
@@ -112,7 +112,7 @@ function ScaledBlockPreview( { blocks, viewportWidth, onReady, delay } ) {
 	);
 }
 
-export function BlockPreview( { blocks, viewportWidth = 700, settings, __experimentalOnReady = noop, __experimentalDelay = 100 } ) {
+export function BlockPreview( { blocks, viewportWidth = 700, settings, __experimentalOnReady = noop, __experimentalScalingDelay = 100 } ) {
 	const renderedBlocks = useMemo( () => castArray( blocks ), [ blocks ] );
 	const [ recompute, triggerRecompute ] = useReducer( ( state ) => state + 1, 0 );
 	useLayoutEffect( triggerRecompute, [ blocks ] );
@@ -133,7 +133,7 @@ export function BlockPreview( { blocks, viewportWidth = 700, settings, __experim
 				blocks={ renderedBlocks }
 				viewportWidth={ viewportWidth }
 				onReady={ __experimentalOnReady }
-				delay={ __experimentalDelay }
+				scalingDelay={ __experimentalScalingDelay }
 			/>
 		</BlockEditorProvider>
 	);
