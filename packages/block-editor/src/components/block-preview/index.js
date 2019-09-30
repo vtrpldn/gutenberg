@@ -81,7 +81,7 @@ function ScaledBlockPreview( { blocks, viewportWidth, onReady } ) {
 				previewContainerRef: previewRef,
 				styles: getOnlineStyles( scale, _x, _y, true, viewportWidth ),
 			} );
-		}, 100 );
+		}, 0 );
 
 		// Cleanup
 		return () => {
