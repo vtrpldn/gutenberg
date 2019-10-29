@@ -51,26 +51,29 @@
 		// Compensate for side UI.
 		padding-left: 0;
 		padding-right: 0;
-
-		// Compensate for block padding.
-		margin-left: -$block-padding;
-		margin-right: -$block-padding;
 	}
 }
 
-.block-editor-block-list__layout .block-editor-block-list__block {
-	position: relative;
+.block-editor-block-list__block .block-editor-block-list__layout.has-spacing {
+	// Compensate for block padding.
+	margin-left: -$block-padding;
+	margin-right: -$block-padding;
+}
+
+.block-editor-block-list__layout .block-editor-block-list__block.has-spacing {
 	padding-left: $block-padding;
 	padding-right: $block-padding;
-
-	// Break long strings of text without spaces so they don't overflow the block.
-	overflow-wrap: break-word;
-
 	@include break-small() {
 		// The block mover needs to stay inside the block to allow clicks when hovering the block-.
 		padding-left: $block-padding + $block-side-ui-width + $block-side-ui-clearance - $border-width;
 		padding-right: $block-padding + $block-side-ui-width + $block-side-ui-clearance - $border-width;
 	}
+}
+
+.block-editor-block-list__layout .block-editor-block-list__block {
+	position: relative;
+	// Break long strings of text without spaces so they don't overflow the block.
+	overflow-wrap: break-word;
 
 	/**
 	 * Notices
@@ -192,9 +195,9 @@
 			}
 		}
 
-		> .block-editor-block-list__block-edit > [data-block] > div > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block:not(.is-selected) > .block-editor-block-list__block-edit::before,
-		> .block-editor-block-list__block-edit > [data-block] > div > .wp-block-cover__inner-container > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block:not(.is-selected) > .block-editor-block-list__block-edit::before,
-		> .block-editor-block-list__block-edit > [data-block] > div > .wp-block-group__inner-container > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block:not(.is-selected) > .block-editor-block-list__block-edit::before {
+		> .block-editor-block-list__block-edit > [data-block] > div > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block:not(.is-selected).has-selected-ui > .block-editor-block-list__block-edit::before,
+		> .block-editor-block-list__block-edit > [data-block] > div > .wp-block-cover__inner-container > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block:not(.is-selected).has-selected-ui > .block-editor-block-list__block-edit::before,
+		> .block-editor-block-list__block-edit > [data-block] > div > .wp-block-group__inner-container > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block:not(.is-selected).has-selected-ui > .block-editor-block-list__block-edit::before {
 			border: $border-width dashed $dark-opacity-light-600;
 
 			.is-dark-theme & {
@@ -203,9 +206,9 @@
 		}
 
 		&.is-hovered > .block-editor-block-list__block-edit::before,
-		> .block-editor-block-list__block-edit > [data-block] > div > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block.is-hovered:not(.is-selected) > .block-editor-block-list__block-edit::before,
-		> .block-editor-block-list__block-edit > [data-block] > div > .wp-block-cover__inner-container > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block.is-hovered:not(.is-selected) > .block-editor-block-list__block-edit::before,
-		> .block-editor-block-list__block-edit > [data-block] > div > .wp-block-group__inner-container > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block.is-hovered:not(.is-selected) > .block-editor-block-list__block-edit::before {
+		> .block-editor-block-list__block-edit > [data-block] > div > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block.is-hovered:not(.is-selected).has-selected-ui > .block-editor-block-list__block-edit::before,
+		> .block-editor-block-list__block-edit > [data-block] > div > .wp-block-cover__inner-container > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block.is-hovered:not(.is-selected).has-selected-ui > .block-editor-block-list__block-edit::before,
+		> .block-editor-block-list__block-edit > [data-block] > div > .wp-block-group__inner-container > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block.is-hovered:not(.is-selected).has-selected-ui > .block-editor-block-list__block-edit::before {
 			border-style: solid;
 			border-color: $dark-opacity-light-500;
 			border-left-color: transparent;
@@ -220,9 +223,9 @@
 	// Add extra border to child blocks when they are selected.
 	&.is-selected {
 
-		> .block-editor-block-list__block-edit > [data-block] > div > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block:not(.is-selected),
-		> .block-editor-block-list__block-edit > [data-block] > div > .wp-block-cover__inner-container > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block:not(.is-selected),
-		> .block-editor-block-list__block-edit > [data-block] > div > .wp-block-group__inner-container > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block:not(.is-selected) {
+		> .block-editor-block-list__block-edit > [data-block] > div > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block:not(.is-selected).has-selected-ui,
+		> .block-editor-block-list__block-edit > [data-block] > div > .wp-block-cover__inner-container > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block:not(.is-selected).has-selected-ui,
+		> .block-editor-block-list__block-edit > [data-block] > div > .wp-block-group__inner-container > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block:not(.is-selected).has-selected-ui {
 
 			> .block-editor-block-list__block-edit::before {
 				border: $border-width dashed $dark-opacity-light-600;

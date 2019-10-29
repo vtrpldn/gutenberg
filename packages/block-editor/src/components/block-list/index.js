@@ -202,13 +202,27 @@ class BlockList extends Component {
 			hasMultiSelection,
 			renderAppender,
 			enableAnimation,
+			__experimentalUIParts = {},
 		} = this.props;
 
+		const uiParts = {
+			hasBreadcrumbs: true,
+			hasMovers: true,
+			hasSpacing: true,
+			hasSelectedUI: true,
+			hasFocusedUI: true,
+			hasHoveredUI: true,
+			hasSideInserter: true,
+			...__experimentalUIParts,
+		};
 		return (
 			<div className={
 				classnames(
 					'editor-block-list__layout block-editor-block-list__layout',
-					className
+					className,
+					{
+						'has-spacing': uiParts.hasSpacing,
+					}
 				)
 			}>
 				{ blockClientIds.map( ( clientId, index ) => {
@@ -235,6 +249,13 @@ class BlockList extends Component {
 								// otherwise there might be a small delay to trigger the animation.
 								animateOnChange={ index }
 								enableAnimation={ enableAnimation }
+								hasSelectedUI={ uiParts.hasSelectedUI }
+								hasHoveredUI={ uiParts.hasHoveredUI }
+								hasFocusedUI={ uiParts.hasFocusedUI }
+								hasBreadcrumbs={ uiParts.hasBreadcrumbs }
+								hasMovers={ uiParts.hasMovers }
+								hasSpacing={ uiParts.hasSpacing }
+								hasSideInserter={ uiParts.hasSideInserter }
 							/>
 						</BlockAsyncModeProvider>
 					);

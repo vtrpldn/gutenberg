@@ -105,12 +105,11 @@ class InnerBlocks extends Component {
 			isSmallScreen, // Temporary click-through disable on desktop.
 			clientId,
 			hasOverlay,
-			renderAppender,
 			template,
-			__experimentalMoverDirection: moverDirection,
 			__experimentalTemplateOptions: templateOptions,
 			__experimentalOnSelectTemplateOption: onSelectTemplateOption,
 			__experimentalAllowTemplateOptionSkip: allowTemplateOptionSkip,
+			...props
 		} = this.props;
 		const { templateInProcess } = this.state;
 
@@ -131,8 +130,7 @@ class InnerBlocks extends Component {
 						/> :
 						<BlockList
 							rootClientId={ clientId }
-							renderAppender={ renderAppender }
-							__experimentalMoverDirection={ moverDirection }
+							{ ...props }
 						/>
 				) }
 			</div>

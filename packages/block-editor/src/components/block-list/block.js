@@ -102,6 +102,13 @@ function BlockListBlock( {
 	enableAnimation,
 	isNavigationMode,
 	enableNavigationMode,
+	hasSelectedUI = true,
+	hasHoveredUI = true,
+	hasFocusedUI = true,
+	hasBreadcrumbs = true,
+	hasMovers = true,
+	hasSpacing = true,
+	hasSideInserter = true,
 } ) {
 	// Random state used to rerender the component if needed, ideally we don't need this
 	const [ , updateRerenderState ] = useState( {} );
@@ -403,7 +410,7 @@ function BlockListBlock( {
 		isSelected &&
 		! showEmptyBlockSideInserter &&
 		! isPartOfMultiSelection &&
-		! isTypingWithinBlock;
+		! isTypingWithinBlock && hasMovers;
 	const shouldShowBreadcrumb =
 		( isSelected && isNavigationMode ) ||
 		( ! isNavigationMode && ! isFocusMode && isHovered && ! isEmptyDefaultBlock );
@@ -428,17 +435,19 @@ function BlockListBlock( {
 	const wrapperClassName = classnames(
 		'wp-block editor-block-list__block block-editor-block-list__block',
 		{
+			'has-selected-ui': hasSelectedUI,
 			'has-warning': ! isValid || !! hasError || isUnregisteredBlock,
-			'is-selected': shouldAppearSelected,
+			'is-selected': shouldAppearSelected && hasSelectedUI,
 			'is-navigate-mode': isNavigationMode,
 			'is-multi-selected': isPartOfMultiSelection,
-			'is-hovered': shouldAppearHovered,
+			'is-hovered': shouldAppearHovered && hasHoveredUI,
 			'is-reusable': isReusableBlock( blockType ),
 			'is-dragging': isDragging,
 			'is-typing': isTypingWithinBlock,
-			'is-focused': isFocusMode && ( isSelected || isParentOfSelectedBlock ),
+			'is-focused': isFocusMode && ( isSelected || isParentOfSelectedBlock ) && hasFocusedUI,
 			'is-focus-mode': isFocusMode,
 			'has-child-selected': isParentOfSelectedBlock,
+			'has-spacing': hasSpacing,
 		},
 		className
 	);
@@ -538,7 +547,7 @@ function BlockListBlock( {
 				) }
 			>
 				{ shouldRenderMovers && ( moverDirection === 'vertical' ) && blockMover }
-				{ shouldShowBreadcrumb && (
+				{ hasBreadcrumbs && shouldShowBreadcrumb && (
 					<BlockBreadcrumb
 						clientId={ clientId }
 						ref={ breadcrumb }
@@ -603,7 +612,7 @@ function BlockListBlock( {
 					/>
 				</div>
 			) }
-			{ showEmptyBlockSideInserter && (
+			{ showEmptyBlockSideInserter && hasSideInserter && (
 				<div className="editor-block-list__empty-block-inserter block-editor-block-list__empty-block-inserter">
 					<Inserter
 						position="top right"
