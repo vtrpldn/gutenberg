@@ -12,7 +12,7 @@
  * @param  array $attributes NavigationMenu block attributes.
  * @return array Colors CSS classes and inline styles.
  */
-function build_css_colors( $attributes ) {
+function gutenberg_build_color_attributes( $attributes ) {
 	// CSS classes.
 	$colors = array(
 		'css_classes'   => '',
@@ -48,8 +48,8 @@ function build_css_colors( $attributes ) {
  *
  * @return string Returns the post content with the legacy widget added.
  */
-function render_block_navigation_menu( $attributes, $content, $block ) {
-	$colors  = build_css_colors( $attributes );
+function gutenberg_render_block_navigation( $attributes, $content, $block ) {
+	$colors  = gutenberg_build_color_attributes( $attributes );
 	$classes = array( 'wp-block-navigation-menu', $colors['css_classes'] );
 	if ( ! empty( $attributes['className'] ) ) {
 		$classes[] = $attributes['className'];
@@ -61,7 +61,7 @@ function render_block_navigation_menu( $attributes, $content, $block ) {
 		'<nav class="%1$s" %2$s>%3$s</nav>',
 		esc_attr( $classes ),
 		$colors['inline_styles'] ? sprintf( 'style="%s"', esc_attr( $colors['inline_styles'] ) ) : '',
-		build_navigation_menu_html( $block, $colors )
+		gutenberg_build_navigation_markup( $block, $colors )
 	);
 }
 
@@ -73,7 +73,7 @@ function render_block_navigation_menu( $attributes, $content, $block ) {
  *
  * @return string Returns  an HTML list from innerBlocks.
  */
-function build_navigation_menu_html( $block, $colors ) {
+function gutenberg_build_navigation_markup( $block, $colors ) {
 	$html = '';
 
 	$class_attribute = sprintf( ' class="%s"', esc_attr( $colors['css_classes'] ? 'wp-block-navigation-menu-item__link ' . $colors['css_classes'] : 'wp-block-navigation-menu-item__link' ) );
@@ -106,7 +106,7 @@ function build_navigation_menu_html( $block, $colors ) {
 		// End anchor tag content.
 
 		if ( count( (array) $block['innerBlocks'] ) > 0 ) {
-			$html .= build_navigation_menu_html( $block, $colors );
+			$html .= gutenberg_build_navigation_markup( $block, $colors );
 		}
 
 		$html .= '</li>';
@@ -117,11 +117,10 @@ function build_navigation_menu_html( $block, $colors ) {
 /**
  * Register the navigation menu block.
  *
- * @uses render_block_navigation_menu()
+ * @uses gutenberg_render_block_navigation()
  * @throws WP_Error An WP_Error exception parsing the block definition.
  */
-function register_block_core_navigation_menu() {
-
+function register_block_core_navigation() {
 	register_block_type(
 		'core/navigation-menu',
 		array(
@@ -141,10 +140,8 @@ function register_block_core_navigation_menu() {
 					'type' => 'string',
 				),
 			),
-
-			'render_callback' => 'render_block_navigation_menu',
+			'render_callback' => 'gutenberg_render_block_navigation',
 		)
 	);
 }
-
-add_action( 'init', 'register_block_core_navigation_menu' );
+add_action( 'init', 'register_block_core_navigation' );
