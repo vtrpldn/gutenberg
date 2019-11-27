@@ -79,7 +79,8 @@ class EditorProvider extends Component {
 		reusableBlocks,
 		__experimentalFetchReusableBlocks,
 		hasUploadPermissions,
-		canUserUseUnfilteredHTML
+		canUserUseUnfilteredHTML,
+		__experimentalShouldInsertAtTheTop
 	) {
 		return {
 			...pick( settings, [
@@ -118,6 +119,7 @@ class EditorProvider extends Component {
 			__experimentalFetchReusableBlocks,
 			__experimentalFetchLinkSuggestions: fetchLinkSuggestions,
 			__experimentalCanUserUseUnfilteredHTML: canUserUseUnfilteredHTML,
+			__experimentalShouldInsertAtTheTop,
 		};
 	}
 
@@ -163,6 +165,7 @@ class EditorProvider extends Component {
 			reusableBlocks,
 			resetEditorBlocksWithoutUndoLevel,
 			hasUploadPermissions,
+			isPostTitleSelected,
 			__experimentalFetchReusableBlocks,
 		} = this.props;
 
@@ -176,6 +179,7 @@ class EditorProvider extends Component {
 			__experimentalFetchReusableBlocks,
 			hasUploadPermissions,
 			canUserUseUnfilteredHTML,
+			isPostTitleSelected,
 		);
 
 		return (
@@ -210,6 +214,7 @@ export default compose( [
 			getEditorSelectionStart,
 			getEditorSelectionEnd,
 			__experimentalGetReusableBlocks,
+			isPostTitleSelected,
 		} = select( 'core/editor' );
 		const { canUser } = select( 'core' );
 
@@ -221,6 +226,8 @@ export default compose( [
 			selectionEnd: getEditorSelectionEnd(),
 			reusableBlocks: __experimentalGetReusableBlocks(),
 			hasUploadPermissions: defaultTo( canUser( 'create', 'media' ), true ),
+			// This selector is only defined on mobile.
+			isPostTitleSelected: isPostTitleSelected && isPostTitleSelected(),
 		};
 	} ),
 	withDispatch( ( dispatch ) => {
