@@ -78,7 +78,8 @@ class EditorProvider extends Component {
 		settings,
 		reusableBlocks,
 		hasUploadPermissions,
-		canUserUseUnfilteredHTML
+		canUserUseUnfilteredHTML,
+		undo,
 	) {
 		return {
 			...pick( settings, [
@@ -113,6 +114,7 @@ class EditorProvider extends Component {
 			__experimentalReusableBlocks: reusableBlocks,
 			__experimentalFetchLinkSuggestions: fetchLinkSuggestions,
 			__experimentalCanUserUseUnfilteredHTML: canUserUseUnfilteredHTML,
+			__experimentalUndo: undo,
 		};
 	}
 
@@ -146,18 +148,19 @@ class EditorProvider extends Component {
 
 	render() {
 		const {
+			blocks,
 			canUserUseUnfilteredHTML,
 			children,
-			post,
-			blocks,
-			resetEditorBlocks,
-			selectionStart,
-			selectionEnd,
-			isReady,
-			settings,
-			reusableBlocks,
-			resetEditorBlocksWithoutUndoLevel,
 			hasUploadPermissions,
+			isReady,
+			post,
+			resetEditorBlocks,
+			resetEditorBlocksWithoutUndoLevel,
+			reusableBlocks,
+			selectionEnd,
+			selectionStart,
+			settings,
+			undo,
 		} = this.props;
 
 		if ( ! isReady ) {
@@ -169,6 +172,7 @@ class EditorProvider extends Component {
 			reusableBlocks,
 			hasUploadPermissions,
 			canUserUseUnfilteredHTML,
+			undo,
 		);
 
 		return (
@@ -223,6 +227,7 @@ export default compose( [
 			resetEditorBlocks,
 			updateEditorSettings,
 			__experimentalTearDownEditor,
+			undo,
 		} = dispatch( 'core/editor' );
 		const { createWarningNotice } = dispatch( 'core/notices' );
 
@@ -239,6 +244,7 @@ export default compose( [
 				} );
 			},
 			tearDownEditor: __experimentalTearDownEditor,
+			undo,
 		};
 	} ),
 ] )( EditorProvider );

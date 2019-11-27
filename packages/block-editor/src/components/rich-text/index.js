@@ -474,7 +474,10 @@ const RichTextContainer = compose( [
 
 		const selectionStart = getSelectionStart();
 		const selectionEnd = getSelectionEnd();
-		const { __experimentalCanUserUseUnfilteredHTML } = getSettings();
+		const {
+			__experimentalCanUserUseUnfilteredHTML,
+			__experimentalUndo: undo,
+		} = getSettings();
 		if ( isSelected === undefined ) {
 			isSelected = (
 				selectionStart.clientId === clientId &&
@@ -503,6 +506,7 @@ const RichTextContainer = compose( [
 			selectionEnd: isSelected ? selectionEnd.offset : undefined,
 			isSelected,
 			didAutomaticChange: didAutomaticChange(),
+			undo,
 			...extraProps,
 		};
 	} ),
@@ -518,7 +522,6 @@ const RichTextContainer = compose( [
 			selectionChange,
 			__unstableMarkAutomaticChange,
 		} = dispatch( 'core/block-editor' );
-		const { undo } = dispatch( 'core/editor' );
 
 		return {
 			onCreateUndoLevel: __unstableMarkLastChangeAsPersistent,
@@ -528,7 +531,6 @@ const RichTextContainer = compose( [
 				selectionChange( clientId, identifier, start, end );
 			},
 			markAutomaticChange: __unstableMarkAutomaticChange,
-			undo,
 		};
 	} ),
 	withFilters( 'experimentalRichText' ),
