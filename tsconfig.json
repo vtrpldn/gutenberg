@@ -4,7 +4,7 @@
 		"allowSyntheticDefaultImports": true,
 		"checkJs": true,
 		"jsx": "preserve",
-		"lib": ["dom", "esnext"],
+		"lib": ["dom", "esnext", "es2020.string"],
 		"module": "commonjs",
 		"noEmit": true,
 		"resolveJsonModule": true,
@@ -22,6 +22,7 @@
 
 	},
 	"include": [
+		"./bin/update-readmes.js",
 		"./packages/url/**/*.js"
 	],
 	"exclude": [
