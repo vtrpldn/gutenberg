@@ -90,7 +90,7 @@ const files = process.argv.slice( 2 );
  *
  * @type {string}
  */
-const packages = files.length ? files.map( getFilePackage ).join() : '*';
+const packages = files.length ? '{' + files.map( getFilePackage ).join() + '}' : '*';
 
 glob.stream( [ `${ PACKAGES_DIR }/${ packages }/README.md` ] )
 	.pipe( filterTokenTransform )
