@@ -45,6 +45,28 @@ function getFilePackage( file ) {
 }
 
 /**
+ * Returns an appropriate glob pattern for the packages directory to match
+ * relevant for a given set of files.
+ *
+ * @param {string[]} files Set of files to match. Pass an empty set to match
+ *                         all packages.
+ *
+ * @return {string} Packages glob pattern.
+ */
+function getPackagePattern( files ) {
+	if ( ! files.length ) {
+		return '*';
+	}
+
+	// Since brace expansion doesn't work with a single package, special-case
+	// the pattern for the singular match.
+	const packages = files.map( getFilePackage );
+	return packages.length === 1 ?
+		packages[ 0 ] :
+		'{' + packages.join() + '}';
+}
+
+/**
  * Stream transform which filters out README files to include only those
  * containing matched token pattern, yielding a tuple of the file and its
  * matched tokens.
@@ -84,15 +106,7 @@ const filterTokenTransform = new Transform( {
  */
 const files = process.argv.slice( 2 );
 
-/**
- * Glob pattern to use for packages, using process arguments if provided, or
- * otherwise assuming to match all packages.
- *
- * @type {string}
- */
-const packages = files.length ? '{' + files.map( getFilePackage ).join() + '}' : '*';
-
-glob.stream( `${ PACKAGES_DIR }/${ packages }/README.md` )
+glob.stream( `${ PACKAGES_DIR }/${ getPackagePattern( files ) }/README.md` )
 	.pipe( filterTokenTransform )
 	.on( 'data', async ( /** @type {WPReadmeFileData} */ data ) => {
 		const [ file, tokens ] = data;
