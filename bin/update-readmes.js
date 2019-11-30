@@ -99,9 +99,7 @@ glob.stream( [ `${ PACKAGES_DIR }/${ packages }/README.md` ] )
 
 		// Each target operates over the same file, so it needs to be processed
 		// synchronously, to make sure the processes don't overwrite eachother.
-		await tokens.reduce( async ( result, [ token, path ] ) => {
-			await result;
-
+		for ( const [ token, path ] of tokens ) {
 			const packageName = getFilePackage( file );
 			try {
 				await execa(
@@ -122,5 +120,5 @@ glob.stream( [ `${ PACKAGES_DIR }/${ packages }/README.md` ] )
 				console.error( error );
 				process.exit( 1 );
 			}
-		}, Promise.resolve() );
+		}
 	} );
