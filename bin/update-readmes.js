@@ -92,7 +92,7 @@ const files = process.argv.slice( 2 );
  */
 const packages = files.length ? '{' + files.map( getFilePackage ).join() + '}' : '*';
 
-glob.stream( [ `${ PACKAGES_DIR }/${ packages }/README.md` ] )
+glob.stream( `${ PACKAGES_DIR }/${ packages }/README.md` )
 	.pipe( filterTokenTransform )
 	.on( 'data', async ( /** @type {WPReadmeFileData} */ data ) => {
 		const [ file, tokens ] = data;
