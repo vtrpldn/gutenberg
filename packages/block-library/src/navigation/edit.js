@@ -26,6 +26,7 @@ import {
 	Toolbar,
 	Placeholder,
 	Button,
+	SelectControl,
 } from '@wordpress/components';
 import { compose } from '@wordpress/compose';
 
@@ -42,7 +43,9 @@ function Navigation( {
 	attributes,
 	clientId,
 	pages,
+	menus,
 	isRequestingPages,
+	isRequestingMenus,
 	hasResolvedPages,
 	setAttributes,
 	hasExistingNavItems,
@@ -135,6 +138,23 @@ function Navigation( {
 							{ __( 'Create from all top pages' ) }
 						</Button>
 
+						{ menus && menus.length && (
+
+							<SelectControl
+								label="Create from existing Menu"
+								value={ null }
+								onChange={ ( ) => {
+
+								} }
+								options={ menus.map( ( menu ) => {
+									return {
+										label: menu.name,
+										value: menu.slug,
+									};
+								} ) }
+							/>
+						) }
+
 						<Button
 							isLink
 							className="wp-block-navigation-placeholder__button"
@@ -182,7 +202,7 @@ function Navigation( {
 			</InspectorControls>
 			<TextColor>
 				<div className="wp-block-navigation">
-					{ ! hasExistingNavItems && isRequestingPages && <><Spinner /> { __( 'Loading Navigation…' ) } </> }
+					{ ! hasExistingNavItems && ( isRequestingPages || isRequestingMenus ) && <><Spinner /> { __( 'Loading Navigation…' ) } </> }
 
 					<InnerBlocks
 						allowedBlocks={ [ 'core/navigation-link' ] }
@@ -207,11 +227,14 @@ export default compose( [
 		};
 
 		const pagesSelect = [ 'core', 'getEntityRecords', [ 'postType', 'page', filterDefaultPages ] ];
+		const menusSelect = [ 'core', 'getEntityRecords', [ 'root', 'menu' ] ];
 
 		return {
 			hasExistingNavItems: !! innerBlocks.length,
 			pages: select( 'core' ).getEntityRecords( 'postType', 'page', filterDefaultPages ),
+			menus: select( 'core' ).getEntityRecords( 'root', 'menu' ),
 			isRequestingPages: select( 'core/data' ).isResolving( ...pagesSelect ),
+			isRequestingMenus: select( 'core/data' ).isResolving( ...menusSelect ),
 			hasResolvedPages: select( 'core/data' ).hasFinishedResolution( ...pagesSelect ),
 		};
 	} ),
