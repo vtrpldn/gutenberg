@@ -111,12 +111,13 @@ glob.stream( `${ PACKAGES_DIR }/${ getPackagePattern( files ) }/README.md` )
 	.on( 'data', async ( /** @type {WPReadmeFileData} */ data ) => {
 		const [ file, tokens ] = data;
 
+		const packageName = getFilePackage( file );
+
 		// Each file can have more than one placeholder content to update, each
 		// represented by tokens. The docgen script updates one token at a time,
 		// so the tokens must be replaced in sequence to prevent the processes
 		// from overriding each other.
 		for ( const [ token, path ] of tokens ) {
-			const packageName = getFilePackage( file );
 			try {
 				await execa(
 					join( __dirname, '..', 'node_modules', '.bin', 'docgen' ),
