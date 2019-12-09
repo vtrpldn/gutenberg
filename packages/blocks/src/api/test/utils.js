@@ -11,7 +11,7 @@ import { getBlockTypes, unregisterBlockType, registerBlockType, setDefaultBlockN
 import {
 	isUnmodifiedDefaultBlock,
 	getAccessibleBlockLabel,
-	getVisualBlockLabel,
+	getBlockLabel,
 } from '../utils';
 
 describe( 'block helpers', () => {
@@ -101,33 +101,33 @@ describe( 'block helpers', () => {
 	} );
 } );
 
-describe( 'getVisualBlockLabel', () => {
+describe( 'getBlockLabel', () => {
 	it( 'returns only the block title when the block has no `getLabel` function', () => {
 		const blockType = { title: 'Recipe' };
 		const attributes = {};
 
-		expect( getVisualBlockLabel( blockType, attributes ) ).toBe( 'Recipe' );
+		expect( getBlockLabel( blockType, attributes ) ).toBe( 'Recipe' );
 	} );
 
 	it( 'returns only the block title when the block has a `getLabel` function, but it returns a falsey value', () => {
 		const blockType = { title: 'Recipe', __experimentalGetLabel: () => '' };
 		const attributes = {};
 
-		expect( getVisualBlockLabel( blockType, attributes ) ).toBe( 'Recipe' );
+		expect( getBlockLabel( blockType, attributes ) ).toBe( 'Recipe' );
 	} );
 
 	it( 'returns the block title with the label when the `getLabel` function returns a value', () => {
 		const blockType = { title: 'Recipe', __experimentalGetLabel: ( { heading } ) => heading };
 		const attributes = { heading: 'Cupcakes!' };
 
-		expect( getVisualBlockLabel( blockType, attributes ) ).toBe( 'Cupcakes!' );
+		expect( getBlockLabel( blockType, attributes ) ).toBe( 'Cupcakes!' );
 	} );
 
 	it( 'removes any html elements from the output of the `getLabel` function', () => {
 		const blockType = { title: 'Recipe', __experimentalGetLabel: ( { heading } ) => heading };
 		const attributes = { heading: '<b><span class="my-class">Cupcakes!</span></b>' };
 
-		expect( getVisualBlockLabel( blockType, attributes ) ).toBe( 'Cupcakes!' );
+		expect( getBlockLabel( blockType, attributes ) ).toBe( 'Cupcakes!' );
 	} );
 } );
 

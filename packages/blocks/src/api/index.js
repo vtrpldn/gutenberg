@@ -56,7 +56,7 @@ export {
 	isUnmodifiedDefaultBlock,
 	normalizeIconObject,
 	isValidIcon,
-	getVisualBlockLabel as __experimentalGetVisualBlockLabel,
+	getBlockLabel as __experimentalGetBlockLabel,
 	getAccessibleBlockLabel as __experimentalGetAccessibleBlockLabel,
 } from './utils';
 export {

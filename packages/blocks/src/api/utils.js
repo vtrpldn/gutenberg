@@ -125,21 +125,22 @@ export function normalizeBlockType( blockTypeOrName ) {
 }
 
 /**
- * Get a visual label for the block, usually this is either the block title,
- * or the value of the `displayLabel` attribute when that's specified.
+ * Get the label for the block, usually this is either the block title,
+ * or the value of the `getLabel` function when that's specified.
  *
- * @param {Object}  blockType  The block type.
- * @param {Object}  attributes The values of the block's attributes.
+ * @param {Object} blockType  The block type.
+ * @param {Object} attributes The values of the block's attributes.
+ * @param {Object} context    The intended use for the label.
  *
  * @return {string} The block label.
  */
-export function getVisualBlockLabel( blockType, attributes ) {
+export function getBlockLabel( blockType, attributes, context = 'visual' ) {
 	const {
 		__experimentalGetLabel: getLabel,
 		title: blockTitle,
 	} = blockType;
 
-	const label = getLabel && getLabel( attributes );
+	const label = getLabel && getLabel( attributes, { context } );
 
 	if ( ! label ) {
 		return blockTitle;
@@ -147,15 +148,15 @@ export function getVisualBlockLabel( blockType, attributes ) {
 
 	// Strip any formatting.
 	const richTextValue = create( { html: label } );
-	const formatlessDisplayName = getTextContent( richTextValue );
+	const formatlessLabel = getTextContent( richTextValue );
 
-	return formatlessDisplayName;
+	return formatlessLabel;
 }
 
 /**
  * Get a label for the block for use by screenreaders, this is more descriptive
  * than the visual label and includes the blockTitle and the value of the
- * `displayLabel` attribute.
+ * `getLabel` function.
  *
  * @param {Object}  blockType  The block type.
  * @param {Object}  attributes The values of the block's attributes.
@@ -166,7 +167,7 @@ export function getVisualBlockLabel( blockType, attributes ) {
 export function getAccessibleBlockLabel( blockType, attributes, row ) {
 	// `blockTitle` is already localized, `label` is a user-supplied value.
 	const { title: blockTitle } = blockType;
-	const label = getVisualBlockLabel( blockType, attributes );
+	const label = getBlockLabel( blockType, attributes, 'accessibility' );
 	const hasRow = row !== undefined;
 	const hasLabel = label && label !== blockTitle;
 

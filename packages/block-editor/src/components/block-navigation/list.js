@@ -9,7 +9,7 @@ import classnames from 'classnames';
  */
 import { Button } from '@wordpress/components';
 import {
-	__experimentalGetVisualBlockLabel as getVisualBlockLabel,
+	__experimentalGetBlockLabel as getBlockLabel,
 	getBlockType,
 } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
@@ -53,7 +53,7 @@ export default function BlockNavigationList( {
 								onClick={ () => selectBlock( block.clientId ) }
 							>
 								<BlockIcon icon={ blockType.icon } showColors />
-								{ getVisualBlockLabel( blockType, block.attributes ) }
+								{ getBlockLabel( blockType, block.attributes ) }
 								{ isSelected && <span className="screen-reader-text">{ __( '(selected block)' ) }</span> }
 							</Button>
 						</div>
