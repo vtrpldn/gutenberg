@@ -552,7 +552,6 @@ function BlockListBlock( {
 					moverDirection={ moverDirection }
 				/>
 			) }
-			{ shouldRenderMovers && ( moverDirection === 'vertical' ) && blockMover }
 			{ shouldShowBreadcrumb && (
 				<BlockBreadcrumb
 					clientId={ clientId }
@@ -593,7 +592,7 @@ function BlockListBlock( {
 					{ isValid && mode === 'html' && (
 						<BlockHtml clientId={ clientId } />
 					) }
-					{ shouldRenderMovers && ( moverDirection === 'horizontal' ) && blockMover }
+					{ shouldRenderMovers && blockMover }
 					{ ! isValid && [
 						<BlockInvalidWarning
 							key="invalid-warning"

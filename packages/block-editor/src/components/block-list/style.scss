@@ -70,6 +70,10 @@
 	// Break long strings of text without spaces so they don't overflow the block.
 	overflow-wrap: break-word;
 
+	[data-block] {
+		position: relative;
+	}
+
 	/**
 	 * Notices
 	 */
@@ -366,10 +370,12 @@
 	// Left.
 	&[data-align="left"] {
 		// This is in the editor only; the image should be floated on the frontend.
-		/*!rtl:begin:ignore*/
-		float: left;
-		margin-right: 2em;
-		/*!rtl:end:ignore*/
+		> [data-block] {
+			/*!rtl:begin:ignore*/
+			float: left;
+			margin-right: 2em;
+			/*!rtl:end:ignore*/
+		}
 
 		// Align block toolbar to floated content.
 		@include break-small() {
@@ -385,10 +391,12 @@
 	// Right.
 	&[data-align="right"] {
 		// Right: This is in the editor only; the image should be floated on the frontend.
-		/*!rtl:begin:ignore*/
-		float: right;
-		margin-left: 2em;
-		/*!rtl:end:ignore*/
+		> [data-block] {
+			/*!rtl:begin:ignore*/
+			float: right;
+			margin-left: 2em;
+			/*!rtl:end:ignore*/
+		}
 
 		// Align block toolbar to floated content.
 		@include break-small() {
@@ -410,7 +418,7 @@
 		z-index: z-index(".block-editor-block-list__block {core/image aligned wide or fullwide}");
 
 		// Mover and settings above
-		&.is-multi-selected > .block-editor-block-mover,
+		&.is-multi-selected .block-editor-block-mover,
 		.block-editor-block-mover {
 			// This moves the menu up by the height of the button + border + padding.
 			top: -$block-side-ui-width - $block-padding - $block-side-ui-clearance - ( $border-width * 2 );
@@ -424,8 +432,8 @@
 			}
 		}
 
-		&.is-multi-selected > .block-editor-block-mover .block-editor-block-mover__control,
-		> .block-editor-block-mover .block-editor-block-mover__control {
+		&.is-multi-selected .block-editor-block-mover .block-editor-block-mover__control,
+		.block-editor-block-mover .block-editor-block-mover__control {
 			float: left;
 		}
 
@@ -459,20 +467,22 @@
 	// Wide.
 	&[data-align="wide"] {
 		// Position mover
-		&.is-multi-selected > .block-editor-block-mover,
-		> .block-editor-block-mover {
+		&.is-multi-selected .block-editor-block-mover,
+		.block-editor-block-mover {
 			left: -$block-padding + $border-width;
 		}
 	}
 
 	// Full-wide.
 	&[data-align="full"] {
-		margin-left: -$block-padding;
-		margin-right: -$block-padding;
+		> [data-block] {
+			margin-left: -$block-padding;
+			margin-right: -$block-padding;
 
-		@include break-small() {
-			margin-left: -$block-padding - $block-padding - $block-side-ui-width - $border-width - $border-width;
-			margin-right: -$block-padding - $block-padding - $block-side-ui-width - $border-width - $border-width;
+			@include break-small() {
+				margin-left: -$block-padding - $block-padding - $block-side-ui-width - $border-width - $border-width;
+				margin-right: -$block-padding - $block-padding - $block-side-ui-width - $border-width - $border-width;
+			}
 		}
 
 		::before {
@@ -483,8 +493,8 @@
 		}
 
 		// Position mover.
-		&.is-multi-selected > .block-editor-block-mover,
-		> .block-editor-block-mover {
+		&.is-multi-selected .block-editor-block-mover,
+		.block-editor-block-mover {
 			left: $block-padding;
 		}
 	}
@@ -525,15 +535,15 @@
 .block-editor-block-list__block {
 
 	// Left and right block settings and mover.
-	&.is-multi-selected > .block-editor-block-mover,
-	> .block-editor-block-mover {
+	&.is-multi-selected .block-editor-block-mover,
+	.block-editor-block-mover {
 		position: absolute;
 		width: $block-side-ui-width + $block-side-ui-clearance;
 	}
 
 	// Position depending on whether selected or not.
-	&.is-multi-selected > .block-editor-block-mover,
-	> .block-editor-block-mover {
+	&.is-multi-selected .block-editor-block-mover,
+	.block-editor-block-mover {
 		top: -$block-padding - $border-width;
 	}
 
@@ -549,8 +559,8 @@
 	}
 
 	// Left side UI.
-	> .block-editor-block-mover,
-	&.is-multi-selected > .block-editor-block-mover {
+	.block-editor-block-mover,
+	&.is-multi-selected .block-editor-block-mover {
 		// Position for top level blocks.
 		left: -$block-side-ui-width - $block-side-ui-clearance - $block-padding - $border-width - $grid-size;
 
