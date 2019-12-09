@@ -466,6 +466,7 @@ function BlockListBlock( {
 			'is-focused': isFocusMode && ( isSelected || isParentOfSelectedBlock ),
 			'is-focus-mode': isFocusMode,
 			'has-child-selected': isParentOfSelectedBlock,
+			'has-mover-inside': moverDirection === 'horizontal',
 		},
 		className
 	);
