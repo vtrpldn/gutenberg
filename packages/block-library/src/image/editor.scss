@@ -97,8 +97,10 @@
 [data-type="core/image"][data-align="center"],
 [data-type="core/image"][data-align="left"],
 [data-type="core/image"][data-align="right"] {
-	figure {
-		margin: 0;
+	[data-block] {
+		figure {
+			margin: 0;
+		}
 	}
 }
 
