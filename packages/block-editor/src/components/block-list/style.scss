@@ -10,15 +10,15 @@
 .block-editor-block-list__layout .block-editor-block-list__block.is-selected { // Needs specificity to override inherited styles.
 	// While block is being dragged, dim the slot dragged from, and hide some UI.
 	&.is-dragging {
-		.block-editor-block-list__block-edit::before {
+		&::before {
 			border: none;
 		}
 
-		> .block-editor-block-list__block-edit > * {
+		> * {
 			background: $light-gray-100;
 		}
 
-		> .block-editor-block-list__block-edit > * > * {
+		> * > * {
 			visibility: hidden;
 		}
 
@@ -28,8 +28,8 @@
 		}
 	}
 
-	> .block-editor-block-list__block-edit .reusable-block-edit-panel * {
-		z-index: z-index(".block-editor-block-list__block-edit .reusable-block-edit-panel *");
+	.reusable-block-edit-panel * {
+		z-index: z-index(".block-editor-block-list__block .reusable-block-edit-panel *");
 	}
 }
 
@@ -97,37 +97,34 @@
 	 * Block border layout
 	 */
 
-	.block-editor-block-list__block-edit {
-		position: relative;
-		&.has-mover-inside > [data-block] {
-			display: flex;
-		}
+	&.has-mover-inside > [data-block] {
+		display: flex;
+	}
 
-		&::before {
-			z-index: z-index(".block-editor-block-list__block-edit::before");
-			content: "";
-			position: absolute;
-			border: $border-width solid transparent;
-			border-left: none;
-			box-shadow: none;
-			pointer-events: none;
-			transition: border-color 0.1s linear, border-style 0.1s linear, box-shadow 0.1s linear;
-			@include reduce-motion("transition");
+	&::before {
+		z-index: z-index(".block-editor-block-list__block::before");
+		content: "";
+		position: absolute;
+		border: $border-width solid transparent;
+		border-left: none;
+		box-shadow: none;
+		pointer-events: none;
+		transition: border-color 0.1s linear, border-style 0.1s linear, box-shadow 0.1s linear;
+		@include reduce-motion("transition");
 
-			// Include a transparent outline for Windows High Contrast mode.
-			outline: $border-width solid transparent;
+		// Include a transparent outline for Windows High Contrast mode.
+		outline: $border-width solid transparent;
 
-			// Go edge-to-edge on mobile.
-			right: -$block-padding;
-			left: -$block-padding;
-			top: -$block-padding;
-			bottom: -$block-padding;
-		}
+		// Go edge-to-edge on mobile.
+		right: -$block-padding;
+		left: -$block-padding;
+		top: -$block-padding;
+		bottom: -$block-padding;
 	}
 
 	// Selected style.
 	&.is-selected {
-		> .block-editor-block-list__block-edit::before {
+		&::before {
 			// Use opacity to work in various editor styles.
 			border-color: $dark-opacity-light-800;
 			box-shadow: inset $block-left-border-width 0 0 0 $dark-gray-500;
@@ -147,7 +144,7 @@
 			}
 		}
 
-		&.is-navigate-mode > .block-editor-block-list__block-edit::before {
+		&.is-navigate-mode::before {
 			border-color: $blue-medium-focus;
 			box-shadow: inset $block-left-border-width 0 0 0 $blue-medium-focus;
 
@@ -181,7 +178,7 @@
 	// To indicate multiple blocks, we provide an additional selection indicator.
 	.block-editor-block-list__block.is-multi-selected {
 
-		> .block-editor-block-list__block-edit::before {
+		&::before {
 			border-left-color: $dark-opacity-light-800;
 			box-shadow: inset $block-left-border-width 0 0 0 $dark-gray-500;
 
@@ -202,7 +199,7 @@
 	}
 
 	// The additional marker, we limit only to top level blocks.
-	.block-editor-block-list__block.is-multi-selected .block-editor-block-list__block.is-multi-selected > .block-editor-block-list__block-edit::before {
+	.block-editor-block-list__block.is-multi-selected .block-editor-block-list__block.is-multi-selected::before {
 		box-shadow: none;
 	}
 
@@ -225,7 +222,7 @@
 	}
 
 	// Warnings
-	&.has-warning .block-editor-block-list__block-edit {
+	&.has-warning [data-block] {
 		// When a block has a warning, you shouldn't be able to manipulate the contents.
 		> * {
 			pointer-events: none;
@@ -238,7 +235,7 @@
 		}
 	}
 
-	&.has-warning .block-editor-block-list__block-edit::before {
+	&.has-warning::before {
 		// Use opacity to work in various editor styles.
 		border-color: $dark-opacity-light-500;
 		border-left: $border-width solid $dark-opacity-light-500;
@@ -248,7 +245,7 @@
 		}
 	}
 
-	&.has-warning.is-selected .block-editor-block-list__block-edit::before {
+	&.has-warning.is-selected::before {
 		// Use opacity to work in various editor styles.
 		border-color: $dark-opacity-light-800;
 		border-left-color: transparent;
@@ -258,7 +255,7 @@
 		}
 	}
 
-	&.has-warning .block-editor-block-list__block-edit::after {
+	&.has-warning::after {
 		content: "";
 		position: absolute;
 		background-color: rgba($light-gray-100, 0.4);
@@ -270,11 +267,11 @@
 	}
 
 	// Avoid conflict with the multi-selection highlight color.
-	&.has-warning.is-multi-selected .block-editor-block-list__block-edit::after {
+	&.has-warning.is-multi-selected::after {
 		background-color: transparent;
 	}
 
-	&.has-warning.is-selected .block-editor-block-list__block-edit::after {
+	&.has-warning.is-selected::after {
 		bottom: ( $block-toolbar-height - $block-padding - $border-width );
 
 		@include break-small() {
@@ -293,14 +290,14 @@
 	}
 
 	// Reusable blocks.
-	&.is-reusable.is-selected > .block-editor-block-list__block-edit::before {
+	&.is-reusable.is-selected::before {
 		border-left-color: transparent;
 		border-style: dashed;
 		border-width: $border-width;
 	}
 
 	// Reusable Blocks clickthrough overlays.
-	&.is-reusable > .block-editor-block-list__block-edit .block-editor-inner-blocks.has-overlay {
+	&.is-reusable .block-editor-inner-blocks.has-overlay {
 		// Remove only the top click overlay.
 		&::after {
 			display: none;
@@ -323,15 +320,12 @@
 		// When images are floated, the block itself should collapse to zero height.
 		height: 0;
 
-		// Hide block border when an image is floated.
-		.block-editor-block-list__block-edit {
-			&::before {
-				content: none;
-			}
-
-			// This margin won't collapse on its own, so zero it out.
-			margin-top: 0;
+		&::before {
+			content: none;
 		}
+
+		// This margin won't collapse on its own, so zero it out.
+		margin-top: 0;
 
 		// Keep a 1px margin to compensate for the border/outline.
 		.block-editor-block-contextual-toolbar {
@@ -372,12 +366,10 @@
 	// Left.
 	&[data-align="left"] {
 		// This is in the editor only; the image should be floated on the frontend.
-		> .block-editor-block-list__block-edit {
-			/*!rtl:begin:ignore*/
-			float: left;
-			margin-right: 2em;
-			/*!rtl:end:ignore*/
-		}
+		/*!rtl:begin:ignore*/
+		float: left;
+		margin-right: 2em;
+		/*!rtl:end:ignore*/
 
 		// Align block toolbar to floated content.
 		@include break-small() {
@@ -393,12 +385,10 @@
 	// Right.
 	&[data-align="right"] {
 		// Right: This is in the editor only; the image should be floated on the frontend.
-		> .block-editor-block-list__block-edit {
-			/*!rtl:begin:ignore*/
-			float: right;
-			margin-left: 2em;
-			/*!rtl:end:ignore*/
-		}
+		/*!rtl:begin:ignore*/
+		float: right;
+		margin-left: 2em;
+		/*!rtl:end:ignore*/
 
 		// Align block toolbar to floated content.
 		@include break-small() {
@@ -421,7 +411,7 @@
 
 		// Mover and settings above
 		&.is-multi-selected > .block-editor-block-mover,
-		> .block-editor-block-list__block-edit > .block-editor-block-mover {
+		.block-editor-block-mover {
 			// This moves the menu up by the height of the button + border + padding.
 			top: -$block-side-ui-width - $block-padding - $block-side-ui-clearance - ( $border-width * 2 );
 			bottom: auto;
@@ -435,7 +425,7 @@
 		}
 
 		&.is-multi-selected > .block-editor-block-mover .block-editor-block-mover__control,
-		> .block-editor-block-list__block-edit > .block-editor-block-mover .block-editor-block-mover__control {
+		> .block-editor-block-mover .block-editor-block-mover__control {
 			float: left;
 		}
 
@@ -450,7 +440,7 @@
 		// Align block toolbar to floated content.
 		// Extra specificity is needed to avoid applying this to innerblocks.
 		@include break-small() {
-			> .block-editor-block-list__block-edit > .block-editor-block-contextual-toolbar > .block-editor-block-toolbar {
+			> .block-editor-block-contextual-toolbar > .block-editor-block-toolbar {
 				/*!rtl:begin:ignore*/
 				left: $block-side-ui-width * 3 + ($grid-size-small * 1.5);
 				/*!rtl:end:ignore*/
@@ -458,7 +448,7 @@
 		}
 
 		@include break-xlarge() {
-			> .block-editor-block-list__block-edit > .block-editor-block-contextual-toolbar > .block-editor-block-toolbar {
+			> .block-editor-block-contextual-toolbar > .block-editor-block-toolbar {
 				/*!rtl:begin:ignore*/
 				left: $block-padding;
 				/*!rtl:end:ignore*/
@@ -470,24 +460,22 @@
 	&[data-align="wide"] {
 		// Position mover
 		&.is-multi-selected > .block-editor-block-mover,
-		> .block-editor-block-list__block-edit > .block-editor-block-mover {
+		> .block-editor-block-mover {
 			left: -$block-padding + $border-width;
 		}
 	}
 
 	// Full-wide.
 	&[data-align="full"] {
-		> .block-editor-block-list__block-edit {
-			margin-left: -$block-padding;
-			margin-right: -$block-padding;
+		margin-left: -$block-padding;
+		margin-right: -$block-padding;
 
-			@include break-small() {
-				margin-left: -$block-padding - $block-padding - $block-side-ui-width - $border-width - $border-width;
-				margin-right: -$block-padding - $block-padding - $block-side-ui-width - $border-width - $border-width;
-			}
+		@include break-small() {
+			margin-left: -$block-padding - $block-padding - $block-side-ui-width - $border-width - $border-width;
+			margin-right: -$block-padding - $block-padding - $block-side-ui-width - $border-width - $border-width;
 		}
 
-		> .block-editor-block-list__block-edit::before {
+		::before {
 			left: 0;
 			right: 0;
 			border-left-width: 0;
@@ -496,7 +484,7 @@
 
 		// Position mover.
 		&.is-multi-selected > .block-editor-block-mover,
-		> .block-editor-block-list__block-edit > .block-editor-block-mover {
+		> .block-editor-block-mover {
 			left: $block-padding;
 		}
 	}
@@ -538,14 +526,14 @@
 
 	// Left and right block settings and mover.
 	&.is-multi-selected > .block-editor-block-mover,
-	> .block-editor-block-list__block-edit > .block-editor-block-mover {
+	> .block-editor-block-mover {
 		position: absolute;
 		width: $block-side-ui-width + $block-side-ui-clearance;
 	}
 
 	// Position depending on whether selected or not.
 	&.is-multi-selected > .block-editor-block-mover,
-	> .block-editor-block-list__block-edit > .block-editor-block-mover {
+	> .block-editor-block-mover {
 		top: -$block-padding - $border-width;
 	}
 
@@ -561,7 +549,7 @@
 	}
 
 	// Left side UI.
-	> .block-editor-block-list__block-edit > .block-editor-block-mover,
+	> .block-editor-block-mover,
 	&.is-multi-selected > .block-editor-block-mover {
 		// Position for top level blocks.
 		left: -$block-side-ui-width - $block-side-ui-clearance - $block-padding - $border-width - $grid-size;
