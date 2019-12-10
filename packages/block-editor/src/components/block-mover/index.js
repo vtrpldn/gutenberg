@@ -86,72 +86,71 @@ export class BlockMover extends Component {
 		// to an unfocused state (body as active element) without firing blur on,
 		// the rendering parent, leaving it unable to react to focus out.
 		return (
-			<Toolbar className={ classnames( 'block-editor-block-mover', { 'is-visible': isFocused || ! isHidden, 'is-horizontal': orientation === 'horizontal' } ) }>
-				<IconButton
-					className="block-editor-block-mover__control"
-					onClick={ isFirst ? null : onMoveUp }
-					icon={ getArrowIcon( 'up' ) }
-					// translators: %s: Horizontal direction of block movement ( left, right )
-					label={ sprintf( __( 'Move %s' ), getMovementDirection( 'up' ) ) }
-					aria-describedby={ `block-editor-block-mover__up-description-${ instanceId }` }
-					aria-disabled={ isFirst }
-					onFocus={ this.onFocus }
-					onBlur={ this.onBlur }
-				/>
+			<BlockDraggable clientIds={ clientIds }>
+				{ ( { onDraggableStart, onDraggableEnd } ) => (
+					<div
+						className={ classnames( 'block-editor-block-mover', {
+							'is-visible': isFocused || ! isHidden, 'is-horizontal': orientation === 'horizontal',
+						} ) }						draggable
+						onDragStart={ onDraggableStart }
+						onDragEnd={ onDraggableEnd }
+					>
+						<Toolbar>
+							<IconButton
+								className="block-editor-block-mover__control"
+								onClick={ isFirst ? null : onMoveUp }
+								icon={ getArrowIcon( 'up' ) }
+								// translators: %s: Horizontal direction of block movement ( left, right )
+								label={ sprintf( __( 'Move %s' ), getMovementDirection( 'up' ) ) }
+								aria-describedby={ `block-editor-block-mover__up-description-${ instanceId }` }
+								aria-disabled={ isFirst }
+								onFocus={ this.onFocus }
+								onBlur={ this.onBlur }
+							/>
 
-				<BlockDraggable clientIds={ clientIds }>
-					{ ( { onDraggableStart, onDraggableEnd } ) => (
-						<IconButton
-							icon={ dragHandle }
-							className="block-editor-block-mover__control-drag-handle"
-							aria-hidden="true"
-							onDragStart={ onDraggableStart }
-							onDragEnd={ onDraggableEnd }
-							draggable
-						/>
-					) }
-				</BlockDraggable>
-
-				<IconButton
-					className="block-editor-block-mover__control"
-					onClick={ isLast ? null : onMoveDown }
-					icon={ getArrowIcon( 'down' ) }
-					// translators: %s: Horizontal direction of block movement ( left, right )
-					label={ sprintf( __( 'Move %s' ), getMovementDirection( 'down' ) ) }
-					aria-describedby={ `block-editor-block-mover__down-description-${ instanceId }` }
-					aria-disabled={ isLast }
-					onFocus={ this.onFocus }
-					onBlur={ this.onBlur }
-				/>
-				<span id={ `block-editor-block-mover__up-description-${ instanceId }` } className="block-editor-block-mover__description">
-					{
-						getBlockMoverDescription(
-							blocksCount,
-							blockType && blockType.title,
-							firstIndex,
-							isFirst,
-							isLast,
-							-1,
-							orientation,
-							isRTL,
-						)
-					}
-				</span>
-				<span id={ `block-editor-block-mover__down-description-${ instanceId }` } className="block-editor-block-mover__description">
-					{
-						getBlockMoverDescription(
-							blocksCount,
-							blockType && blockType.title,
-							firstIndex,
-							isFirst,
-							isLast,
-							1,
-							orientation,
-							isRTL,
-						)
-					}
-				</span>
-			</Toolbar>
+							<IconButton
+								className="block-editor-block-mover__control"
+								onClick={ isLast ? null : onMoveDown }
+								icon={ getArrowIcon( 'down' ) }
+								// translators: %s: Horizontal direction of block movement ( left, right )
+								label={ sprintf( __( 'Move %s' ), getMovementDirection( 'down' ) ) }
+								aria-describedby={ `block-editor-block-mover__down-description-${ instanceId }` }
+								aria-disabled={ isLast }
+								onFocus={ this.onFocus }
+								onBlur={ this.onBlur }
+							/>
+							<span id={ `block-editor-block-mover__up-description-${ instanceId }` } className="block-editor-block-mover__description">
+								{
+									getBlockMoverDescription(
+										blocksCount,
+										blockType && blockType.title,
+										firstIndex,
+										isFirst,
+										isLast,
+										-1,
+										orientation,
+										isRTL,
+									)
+								}
+							</span>
+							<span id={ `block-editor-block-mover__down-description-${ instanceId }` } className="block-editor-block-mover__description">
+								{
+									getBlockMoverDescription(
+										blocksCount,
+										blockType && blockType.title,
+										firstIndex,
+										isFirst,
+										isLast,
+										1,
+										orientation,
+										isRTL,
+									)
+								}
+							</span>
+						</Toolbar>
+					</div>
+				) }
+			</BlockDraggable>
 		);
 	}
 }
