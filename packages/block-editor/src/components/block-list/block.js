@@ -81,6 +81,7 @@ function BlockListBlock( {
 	isSelectionEnabled,
 	className,
 	name,
+	index,
 	isValid,
 	isLast,
 	attributes,
@@ -400,7 +401,7 @@ function BlockListBlock( {
 	const isHovered = isBlockHovered && ! isPartOfMultiSelection;
 	const blockType = getBlockType( name );
 
-	const blockAriaLabel = getAccessibleBlockLabel( blockType, attributes );
+	const blockAriaLabel = getAccessibleBlockLabel( blockType, attributes, index + 1 );
 	const isUnregisteredBlock = name === getUnregisteredTypeHandlerName();
 
 	// If the block is selected and we're typing the block should not appear.
@@ -684,6 +685,7 @@ const applyWithSelect = withSelect(
 			hasFixedToolbar: hasFixedToolbar && isLargeViewport,
 			isLast: index === blockOrder.length - 1,
 			isNavigationMode: isNavigationMode(),
+			index,
 			isRTL,
 
 			// Users of the editor.BlockListBlock filter used to be able to access the block prop
