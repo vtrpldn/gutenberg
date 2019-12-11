@@ -17,7 +17,7 @@ export { metadata, name } from './index.js';
 
 export const settings = {
 	...webSettings,
-	__experimentalGetLabel( attributes ) {
+	__experimentalLabel( attributes ) {
 		const { content, level } = attributes;
 
 		return isEmpty( content ) ?

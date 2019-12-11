@@ -126,7 +126,7 @@ export function normalizeBlockType( blockTypeOrName ) {
 
 /**
  * Get the label for the block, usually this is either the block title,
- * or the value of the `getLabel` function when that's specified.
+ * or the value of the block's `label` function when that's specified.
  *
  * @param {Object} blockType  The block type.
  * @param {Object} attributes The values of the block's attributes.
@@ -136,7 +136,7 @@ export function normalizeBlockType( blockTypeOrName ) {
  */
 export function getBlockLabel( blockType, attributes, context = 'visual' ) {
 	const {
-		__experimentalGetLabel: getLabel,
+		__experimentalLabel: getLabel,
 		title,
 	} = blockType;
 

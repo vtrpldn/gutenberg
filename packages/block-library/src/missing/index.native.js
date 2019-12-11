@@ -12,7 +12,7 @@ export { metadata, name } from './index.js';
 
 export const settings = {
 	...webSettings,
-	__experimentalGetLabel( attributes ) {
+	__experimentalLabel( attributes ) {
 		const { originalName } = attributes;
 
 		const originalBlockType = originalName && coreBlocks[ originalName ];

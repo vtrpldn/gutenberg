@@ -22,7 +22,7 @@ export const settings = {
 
 	description: __( 'Add a page, link, or other item to your navigation.' ),
 
-	__experimentalGetLabel: ( { label } ) => label,
+	__experimentalLabel: ( { label } ) => label,
 
 	edit,
 	save,

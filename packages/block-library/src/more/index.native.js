@@ -7,7 +7,7 @@ export { metadata, name } from './index.js';
 
 export const settings = {
 	...webSettings,
-	__experimentalGetLabel( attributes ) {
+	__experimentalLabel( attributes ) {
 		return attributes.customText;
 	},
 };
