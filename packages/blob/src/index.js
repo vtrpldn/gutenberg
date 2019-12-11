@@ -27,7 +27,7 @@ export function createBlobURL( file ) {
  *
  * @param {string} url The blob URL.
  *
- * @return {?File} The file for the blob URL.
+ * @return {File|undefined} The file for the blob URL.
  */
 export function getBlobByURL( url ) {
 	return cache[ url ];
