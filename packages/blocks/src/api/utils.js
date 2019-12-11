@@ -137,13 +137,13 @@ export function normalizeBlockType( blockTypeOrName ) {
 export function getBlockLabel( blockType, attributes, context = 'visual' ) {
 	const {
 		__experimentalGetLabel: getLabel,
-		title: blockTitle,
+		title,
 	} = blockType;
 
 	const label = getLabel && getLabel( attributes, { context } );
 
 	if ( ! label ) {
-		return blockTitle;
+		return title;
 	}
 
 	// Strip any formatting.
@@ -155,8 +155,8 @@ export function getBlockLabel( blockType, attributes, context = 'visual' ) {
 
 /**
  * Get a label for the block for use by screenreaders, this is more descriptive
- * than the visual label and includes the blockTitle and the value of the
- * `getLabel` function.
+ * than the visual label and includes the block title and the value of the
+ * `getLabel` function if it's specified.
  *
  * @param {Object}  blockType  The block type.
  * @param {Object}  attributes The values of the block's attributes.
@@ -165,18 +165,23 @@ export function getBlockLabel( blockType, attributes, context = 'visual' ) {
  * @return {string} The block label.
  */
 export function getAccessibleBlockLabel( blockType, attributes, row ) {
-	// `blockTitle` is already localized, `label` is a user-supplied value.
-	const { title: blockTitle } = blockType;
+	// `title` is already localized, `label` is a user-supplied value.
+	const { title } = blockType;
 	const label = getBlockLabel( blockType, attributes, 'accessibility' );
 	const hasRow = row !== undefined;
-	const hasLabel = label && label !== blockTitle;
+
+	// getBlockLabel returns the block title as a fallback when there's no label,
+	// if it did return the title, this function needs to avoid adding the
+	// title twice within the accessible label. Use this `hasLabel` boolean to
+	// handle that.
+	const hasLabel = label && label !== title;
 
 	if ( hasRow ) {
 		if ( hasLabel ) {
 			return sprintf(
 				/* translators: accessibility text. %s: block title, %d block row number, $s block label.. */
 				__( '%s Block. Row %d. %s' ),
-				blockTitle,
+				title,
 				row,
 				label
 			);
@@ -185,7 +190,7 @@ export function getAccessibleBlockLabel( blockType, attributes, row ) {
 		return sprintf(
 			/* translators: accessibility text. %s: block title, %d block row number. */
 			__( '%s Block. Row %d' ),
-			blockTitle,
+			title,
 			row,
 		);
 	}
@@ -194,7 +199,7 @@ export function getAccessibleBlockLabel( blockType, attributes, row ) {
 		return sprintf(
 			/* translators: accessibility text. %s: block title. $s block label. */
 			__( '%s Block. %s' ),
-			blockTitle,
+			title,
 			label
 		);
 	}
@@ -202,6 +207,6 @@ export function getAccessibleBlockLabel( blockType, attributes, row ) {
 	return sprintf(
 		/* translators: accessibility text. %s: block title. */
 		__( '%s Block' ),
-		blockTitle
+		title
 	);
 }
