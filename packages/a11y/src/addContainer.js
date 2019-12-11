@@ -29,7 +29,9 @@ const addContainer = function( ariaLive ) {
 	container.setAttribute( 'aria-relevant', 'additions text' );
 	container.setAttribute( 'aria-atomic', 'true' );
 
-	document.querySelector( 'body' ).appendChild( container );
+	// Disable reason: the querySelector + optional chain may make the expression `null`.
+	// eslint-disable-next-line no-unused-expressions
+	document.querySelector( 'body' )?.appendChild( container );
 	return container;
 };
 
