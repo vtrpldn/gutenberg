@@ -2,6 +2,7 @@
 	"extends": "../../tsconfig.json",
 	"files": [ "src/index.js" ],
 	"compilerOptions": {
+		"declaration": true,
 		"declarationDir": "build-types"
 	}
 }
