@@ -9,7 +9,7 @@ import { default as tinycolor, mostReadable } from 'tinycolor2';
  */
 import { Component, isValidElement } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
-import { create, getTextContent } from '@wordpress/rich-text';
+import { stripHTML } from '@wordpress/dom';
 
 /**
  * Internal dependencies
@@ -146,11 +146,8 @@ export function getBlockLabel( blockType, attributes, context = 'visual' ) {
 		return title;
 	}
 
-	// Strip any formatting.
-	const richTextValue = create( { html: label } );
-	const formatlessLabel = getTextContent( richTextValue );
-
-	return formatlessLabel;
+	// Strip any HTML (i.e. RichText formatting) before returning.
+	return stripHTML( label );
 }
 
 /**
