@@ -8,7 +8,7 @@ describe( 'block mover', () => {
 		dirDown = 1;
 
 	describe( 'getBlockMoverDescription', () => {
-		const label = 'Header: Writing Tests Considered Harmful';
+		const label = 'Header: Some Header Text';
 
 		it( 'Should generate a title for the first item moving up', () => {
 			expect( getBlockMoverDescription(
@@ -19,7 +19,7 @@ describe( 'block mover', () => {
 				false,
 				dirUp,
 			) ).toBe(
-				`Block '${ label }' is at the beginning of the content and can’t be moved up`
+				`Block ${ label } is at the beginning of the content and can’t be moved up`
 			);
 		} );
 
@@ -31,7 +31,7 @@ describe( 'block mover', () => {
 				false,
 				true,
 				dirDown,
-			) ).toBe( `Block '${ label }' is at the end of the content and can’t be moved down` );
+			) ).toBe( `Block ${ label } is at the end of the content and can’t be moved down` );
 		} );
 
 		it( 'Should generate a title for the second item moving up', () => {
@@ -42,7 +42,7 @@ describe( 'block mover', () => {
 				false,
 				false,
 				dirUp,
-			) ).toBe( `Move '${ label }' block from position 2 up to position 1` );
+			) ).toBe( `Move ${ label } block from position 2 up to position 1` );
 		} );
 
 		it( 'Should generate a title for the second item moving down', () => {
@@ -53,7 +53,7 @@ describe( 'block mover', () => {
 				false,
 				false,
 				dirDown,
-			) ).toBe( `Move '${ label }' block from position 2 down to position 3` );
+			) ).toBe( `Move ${ label } block from position 2 down to position 3` );
 		} );
 
 		it( 'Should generate a title for the only item in the list', () => {
@@ -64,7 +64,7 @@ describe( 'block mover', () => {
 				true,
 				true,
 				dirDown,
-			) ).toBe( `Block '${ label }' is the only block, and cannot be moved` );
+			) ).toBe( `Block ${ label } is the only block, and cannot be moved` );
 		} );
 	} );
 

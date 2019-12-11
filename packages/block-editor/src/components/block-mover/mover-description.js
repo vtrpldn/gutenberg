@@ -44,7 +44,7 @@ export function getBlockMoverDescription( selectedCount, blockLabel, firstIndex,
 
 	if ( isFirst && isLast ) {
 		// translators: %s: Type of block (i.e. Text, Image etc)
-		return sprintf( __( "Block '%s' is the only block, and cannot be moved" ), blockLabel );
+		return sprintf( __( 'Block %s is the only block, and cannot be moved' ), blockLabel );
 	}
 
 	if ( dir > 0 && ! isLast ) {
