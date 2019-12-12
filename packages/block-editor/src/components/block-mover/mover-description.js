@@ -8,15 +8,15 @@ import { __, _n, sprintf } from '@wordpress/i18n';
  *
  * @param {number}  selectedCount Number of blocks selected.
  * @param {string}  blockLabel    Block label, generally the block type, but sometimes this
- * 								  also includes display text (e.g. 'Header: My Life Story')
+ *                                also includes display text (e.g. 'Header: My Life Story')
  * @param {number}  firstIndex    The index (position - 1) of the first block selected.
  * @param {boolean} isFirst       This is the first block.
  * @param {boolean} isLast        This is the last block.
  * @param {number}  dir           Direction of movement (> 0 is considered to be going
- *                                 down, < 0 is up).
+ *                                down, < 0 is up).
  * @param {string}  orientation   The orientation of the block movers, vertical or
- * 								   horizontal.
- * @param {boolean} isRTL   	  True if current writing system is right to left.
+ *                                horizontal.
+ * @param {boolean} isRTL         True if current writing system is right to left.
  *
  * @return {string} Label for the block movement controls.
  */
