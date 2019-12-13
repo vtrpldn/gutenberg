@@ -23,12 +23,12 @@ const ColorSelectorSVGIcon = () => (
  * @param {Object} colorControlProps colorControl properties.
  * @return {*} React Icon component.
  */
-const ColorSelectorIcon = ( { color } ) => {
+const ColorSelectorIcon = ( { color, backgroundColor } ) => {
 	return (
 		<div className="block-library-colors-selector__icon-container">
 			<div
 				className="block-library-colors-selector__state-selection"
-				style={ { ...( color && { color } ) } }
+				style={ { ...( color && { color } ), ...( backgroundColor && { backgroundColor } ) } }
 			>
 				<ColorSelectorSVGIcon />
 			</div>
@@ -42,7 +42,7 @@ const ColorSelectorIcon = ( { color } ) => {
  * @param {Object} colorControlProps colorControl properties.
  * @return {*} React toggle button component.
  */
-const renderToggleComponent = ( { value } ) => ( { onToggle, isOpen } ) => {
+const renderToggleComponent = ( { textColor, backgroundColor } ) => ( { onToggle, isOpen } ) => {
 	const openOnArrowDown = ( event ) => {
 		if ( ! isOpen && event.keyCode === DOWN ) {
 			event.preventDefault();
@@ -58,7 +58,7 @@ const renderToggleComponent = ( { value } ) => ( { onToggle, isOpen } ) => {
 				label={ __( 'Open Colors Selector' ) }
 				onClick={ onToggle }
 				onKeyDown={ openOnArrowDown }
-				icon={ <ColorSelectorIcon color={ value } /> }
+				icon={ <ColorSelectorIcon color={ textColor } backgroundColor={ backgroundColor } /> }
 			/>
 		</ToolbarGroup>
 	);
