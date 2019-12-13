@@ -13,33 +13,20 @@ describe( 'BlockMover', () => {
 	describe( 'basic rendering', () => {
 		const selectedClientIds = [ 'IisClientId', 'IisOtherClientId' ];
 
-		const blockLabel = 'Header: Test Header';
+		const blockType = {
+			title: 'yolo-block',
+		};
 
 		it( 'should not render if the editor is locked', () => {
 			const wrapper = shallow( <BlockMover isLocked /> );
 			expect( wrapper.type() ).toBe( null );
 		} );
 
-		it( 'should log a deprecation warning when the blockType prop is used and to still be backwards compatible', () => {
-			const blockMover = shallow(
-				<BlockMover
-					clientIds={ [ 'singleClientId' ] }
-					blockType={ { title: 'Header' } }
-					firstIndex={ 0 }
-					instanceId={ 1 } />
-			);
-
-			expect( console ).toHaveWarned();
-
-			const moveUpDesc = blockMover.childAt( 3 );
-			expect( moveUpDesc.text() ).toBe( 'Move Header block from position 1 up to position 0' );
-		} );
-
 		it( 'should render three icons with the following props', () => {
 			const blockMover = shallow(
 				<BlockMover
 					clientIds={ selectedClientIds }
-					blockLabel={ blockLabel }
+					blockType={ blockType }
 					firstIndex={ 0 }
 					instanceId={ 1 }
 				/>
@@ -79,7 +66,7 @@ describe( 'BlockMover', () => {
 			const blockMover = shallow(
 				<BlockMover
 					clientIds={ selectedClientIds }
-					blockLabel={ blockLabel }
+					blockType={ blockType }
 					onMoveUp={ onMoveUp }
 					firstIndex={ 0 }
 				/>
@@ -92,7 +79,7 @@ describe( 'BlockMover', () => {
 			const blockMover = shallow(
 				<BlockMover
 					clientIds={ selectedClientIds }
-					blockLabel={ blockLabel }
+					blockType={ blockType }
 					onMoveDown={ onMoveDown }
 					firstIndex={ 0 }
 				/>
@@ -106,7 +93,7 @@ describe( 'BlockMover', () => {
 			const blockMover = shallow(
 				<BlockMover
 					clientIds={ selectedClientIds }
-					blockLabel={ blockLabel }
+					blockType={ blockType }
 					onMoveDown={ onMoveDown }
 					isLast
 					firstIndex={ 0 }

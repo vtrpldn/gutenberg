@@ -9,14 +9,10 @@ import classnames from 'classnames';
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { IconButton } from '@wordpress/components';
-import {
-	getBlockType,
-	__experimentalGetAccessibleBlockLabel as getAccessibleBlockLabel,
-} from '@wordpress/blocks';
+import { getBlockType } from '@wordpress/blocks';
 import { Component } from '@wordpress/element';
 import { withSelect, withDispatch } from '@wordpress/data';
 import { withInstanceId, compose } from '@wordpress/compose';
-import deprecated from '@wordpress/deprecated';
 
 /**
  * Internal dependencies
@@ -48,34 +44,11 @@ export class BlockMover extends Component {
 	}
 
 	render() {
-		const {
-			onMoveUp,
-			onMoveDown,
-			__experimentalOrientation: orientation,
-			isRTL,
-			isFirst,
-			isLast,
-			clientIds,
-			firstIndex,
-			isLocked,
-			instanceId,
-			isHidden,
-			rootClientId,
-			// `blockType` is now deprecated. If it's defined use its value
-			// as the default for its replacement prop, `blockLabel`.
-			blockType,
-			blockLabel = ( blockType ? blockType.title : undefined ),
-		} = this.props;
+		const { onMoveUp, onMoveDown, __experimentalOrientation: orientation, isRTL, isFirst, isLast, clientIds, blockType, firstIndex, isLocked, instanceId, isHidden, rootClientId } = this.props;
 		const { isFocused } = this.state;
 		const blocksCount = castArray( clientIds ).length;
 		if ( isLocked || ( isFirst && isLast && ! rootClientId ) ) {
 			return null;
-		}
-
-		if ( blockType ) {
-			deprecated( 'wp.blockEditor.BlockMover blockType prop', {
-				alternative: 'blockLabel prop',
-			} );
 		}
 
 		const getArrowIcon = ( moveDirection ) => {
@@ -154,7 +127,7 @@ export class BlockMover extends Component {
 					{
 						getBlockMoverDescription(
 							blocksCount,
-							blockLabel,
+							blockType && blockType.title,
 							firstIndex,
 							isFirst,
 							isLast,
@@ -168,7 +141,7 @@ export class BlockMover extends Component {
 					{
 						getBlockMoverDescription(
 							blocksCount,
-							blockLabel,
+							blockType && blockType.title,
 							firstIndex,
 							isFirst,
 							isLast,
@@ -185,19 +158,11 @@ export class BlockMover extends Component {
 
 export default compose(
 	withSelect( ( select, { clientIds } ) => {
-		const {
-			getBlock,
-			getBlockIndex,
-			getTemplateLock,
-			getBlockRootClientId,
-			getBlockOrder,
-			getBlockAttributes,
-		} = select( 'core/block-editor' );
-
+		const { getBlock, getBlockIndex, getTemplateLock, getBlockRootClientId, getBlockOrder } = select( 'core/block-editor' );
 		const normalizedClientIds = castArray( clientIds );
 		const firstClientId = first( normalizedClientIds );
 		const block = getBlock( firstClientId );
-		const rootClientId = getBlockRootClientId( firstClientId );
+		const rootClientId = getBlockRootClientId( first( normalizedClientIds ) );
 		const blockOrder = getBlockOrder( rootClientId );
 		const firstIndex = getBlockIndex( firstClientId, rootClientId );
 		const lastIndex = getBlockIndex( last( normalizedClientIds ), rootClientId );
@@ -205,11 +170,9 @@ export default compose(
 		const {
 			isRTL,
 		} = getSettings();
-		const blockType = getBlockType( block.name );
-		const blockAttributes = getBlockAttributes( firstClientId );
 
 		return {
-			blockLabel: getAccessibleBlockLabel( blockType, blockAttributes ),
+			blockType: block ? getBlockType( block.name ) : null,
 			isLocked: getTemplateLock( rootClientId ) === 'all',
 			rootClientId,
 			firstIndex,
