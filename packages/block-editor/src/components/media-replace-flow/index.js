@@ -136,10 +136,10 @@ const MediaReplaceFlow = (
 			onClose={ () => setShowMediaReplaceOptions( true ) }
 			allowedTypes={ allowedTypes }
 			render={ ( { open } ) => (
-				<Toolbar className={ 'media-replace-flow components-dropdown-menu' }>
+				<Toolbar className="media-replace-flow components-dropdown-menu">
 					<Button
 						ref={ editMediaButtonRef }
-						className={ 'components-icon-button components-dropdown-menu__toggle' }
+						className="components-dropdown-menu__toggle"
 						onClick={ () => {
 							setShowMediaReplaceOptions( ! showMediaReplaceOptions );
 						} }

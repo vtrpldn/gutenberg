@@ -332,41 +332,6 @@
 			// This margin won't collapse on its own, so zero it out.
 			margin-top: 0;
 		}
-
-		// Keep a 1px margin to compensate for the border/outline.
-		.block-editor-block-contextual-toolbar {
-			margin-bottom: $border-width;
-		}
-
-		// Position toolbar better on mobile.
-		.block-editor-block-contextual-toolbar {
-			width: auto;
-			border-bottom: $border-width solid $light-gray-800;
-			bottom: auto;
-
-			@include break-small() {
-				border-bottom: none;
-			}
-		}
-	}
-
-	// Unlike most explicit left/right alignments, this one should be flipped by the auto-RTL system.
-	&[data-align="left"] .block-editor-block-contextual-toolbar {
-		left: 0;
-		right: auto;
-	}
-
-	&[data-align="right"] .block-editor-block-contextual-toolbar {
-		left: auto;
-		right: 0;
-	}
-
-	// Position the sticky toolbar correctly beyond the mobile breakpoint.
-	@include break-small() {
-		&[data-align="right"] .block-editor-block-contextual-toolbar,
-		&[data-align="left"] .block-editor-block-contextual-toolbar {
-			top: $block-padding;
-		}
 	}
 
 	// Left.
@@ -378,16 +343,6 @@
 			margin-right: 2em;
 			/*!rtl:end:ignore*/
 		}
-
-		// Align block toolbar to floated content.
-		@include break-small() {
-			.block-editor-block-toolbar {
-				/*!rtl:begin:ignore*/
-				left: $block-padding;
-				right: auto;
-				/*!rtl:end:ignore*/
-			}
-		}
 	}
 
 	// Right.
@@ -398,16 +353,6 @@
 			float: right;
 			margin-left: 2em;
 			/*!rtl:end:ignore*/
-		}
-
-		// Align block toolbar to floated content.
-		@include break-small() {
-			.block-editor-block-toolbar {
-				/*!rtl:begin:ignore*/
-				right: $block-padding;
-				left: auto;
-				/*!rtl:end:ignore*/
-			}
 		}
 	}
 
@@ -444,24 +389,6 @@
 		@include break-small () {
 			.block-editor-block-toolbar {
 				display: inline-flex;
-			}
-		}
-
-		// Align block toolbar to floated content.
-		// Extra specificity is needed to avoid applying this to innerblocks.
-		@include break-small() {
-			> .block-editor-block-list__block-edit > .block-editor-block-contextual-toolbar > .block-editor-block-toolbar {
-				/*!rtl:begin:ignore*/
-				left: $block-side-ui-width * 3 + ($grid-size-small * 1.5);
-				/*!rtl:end:ignore*/
-			}
-		}
-
-		@include break-xlarge() {
-			> .block-editor-block-list__block-edit > .block-editor-block-contextual-toolbar > .block-editor-block-toolbar {
-				/*!rtl:begin:ignore*/
-				left: $block-padding;
-				/*!rtl:end:ignore*/
 			}
 		}
 	}
@@ -701,112 +628,75 @@
 /**
  * Block Toolbar when contextual.
  */
-
-.block-editor-block-list__block {
-	.block-editor-block-contextual-toolbar {
-		z-index: z-index(".block-editor-block-contextual-toolbar");
-		white-space: nowrap;
-		text-align: left;
-		pointer-events: none;
-
-		// Position toolbar below the block on mobile.
-		position: absolute;
-		bottom: - $block-toolbar-height - $block-padding - $border-width;
-		left: -$block-padding;
-		right: -$block-padding;
-
-		// Paint the borders on the toolbar itself on mobile.
-		border-top: $border-width solid $light-gray-800;
-		border-bottom: $border-width solid $light-gray-800;
-		.components-toolbar {
-			border-top: none;
-			border-bottom: none;
-		}
-
-		@include break-small() {
-			border-top: none;
-			border-bottom: none;
-			.components-toolbar {
-				border-top: $border-width solid $light-gray-800;
-				border-bottom: $border-width solid $light-gray-800;
-			}
-		}
-	}
-
-	// Floated items have special needs for the contextual toolbar position + the thicker left border.
-	&[data-align="left"] .block-editor-block-contextual-toolbar,
-	&[data-align="right"] .block-editor-block-contextual-toolbar {
-		margin-bottom: $border-width;
-		margin-top: -$block-toolbar-height;
-
-		// Display the box-shadow on the parent element.
-		box-shadow: -$block-left-border-width 0 0 0 $dark-gray-500;
-		.is-dark-theme & {
-			box-shadow: -$block-left-border-width 0 0 0 $light-gray-600;
-		}
-
-		@include break-small() {
-			box-shadow: none;
-		}
-
-		.block-editor-block-toolbar {
-			border-left: none;
-		}
-	}
-
-	// Make block toolbar full width on mobile.
-	.block-editor-block-contextual-toolbar {
-		margin-left: 0;
-		margin-right: 0;
-		@include break-small() {
-			margin-left: -$block-padding - $border-width;
-			margin-right: -$block-padding - $border-width;
-		}
-	}
-
-	// For floats, compensate for this so content doesn't grow smaller.
-	&[data-align="left"] .block-editor-block-contextual-toolbar {
-		/*rtl:ignore*/
-		margin-right: $block-padding + $border-width;
-	}
-
-	&[data-align="right"] .block-editor-block-contextual-toolbar {
-		/*rtl:ignore*/
-		margin-left: $block-padding + $border-width;
-	}
-
-	// Reset pointer-events on children.
-	.block-editor-block-contextual-toolbar > * {
-		pointer-events: auto;
-	}
-
-	// Full-aligned blocks have negative margins on the parent of the toolbar, so additional position adjustment is not required.
-	&[data-align="full"] .block-editor-block-contextual-toolbar {
-		left: 0;
-		right: 0;
-	}
-}
-
 // Enable toolbar footprint collapsing
 .block-editor-block-contextual-toolbar {
 	// Position the contextual toolbar above the block.
-	.block-editor-block-list__block & {
-		@include break-small() {
-			bottom: auto;
-			left: auto;
-			right: auto;
-			box-shadow: none;
+	bottom: auto;
+	left: auto;
+	right: auto;
+	box-shadow: none;
+	margin-left: -$block-padding - $border-width;
+	margin-right: -$block-padding - $border-width;
+	pointer-events: none;
+	z-index: z-index(".block-editor-block-contextual-toolbar");
+	white-space: nowrap;
+	text-align: left;
 
-			// Move the block toolbar out of the flow using translate.
-			transform: translateY(-$block-toolbar-height -$block-padding -$border-width);
+	// Move the block toolbar out of the flow using translate.
+	transform: translateY(-$block-toolbar-height -$block-padding -$border-width);
 
-			// IE11 does not support `position: sticky`.
-			@supports (position: sticky) {
-				position: sticky;
+	// IE11 does not support `position: sticky`.
+	@supports (position: sticky) {
+		position: sticky;
 
-				// Compensate for translate, so the sticky sticks to the top.
-				top: $block-toolbar-height + $block-padding;
-			}
+		// Compensate for translate, so the sticky sticks to the top.
+		top: $block-toolbar-height + $block-padding;
+	}
+
+	.block-editor-block-toolbar {
+		width: auto;
+
+		// Hide right border on desktop, where the .components-toolbar instead has a right border.
+		border-right: none;
+
+		// This prevents floats from messing up the position of the block toolbar on floats-adjacent blocks when selected.
+		position: absolute;
+		left: $border-width;
+		top: $border-width;
+	}
+
+	// Adapt the height of the toolbar items.
+	.components-toolbar {
+		height: $block-toolbar-height + 1px;
+		border-top: $border-width solid $light-gray-800;
+		border-bottom: $border-width solid $light-gray-800;
+
+		// Ensure the icon buttons remain square.
+		.components-icon-button:not(.has-text) {
+			width: $block-toolbar-height;
+		}
+
+		// Adapt the height of all toolbar buttons.
+		.components-button {
+			height: $block-toolbar-height;
+		}
+	}
+
+	// Reset pointer-events on children.
+	& > * {
+		pointer-events: auto;
+	}
+
+	// Adapt the toolbar to float blocks
+	.block-editor-block-list__block[data-align="left"] &,
+	.block-editor-block-list__block[data-align="right"] & {
+		transform: translateY(-$block-toolbar-height -$border-width);
+		// IE11 does not support `position: sticky`.
+		@supports (position: sticky) {
+			position: sticky;
+
+			// Compensate for translate, so the sticky sticks to the top.
+			top: $block-toolbar-height;
 		}
 	}
 
@@ -814,6 +704,11 @@
 		// RTL note: this rule should not be auto-flipped based on direction.
 		/*rtl:ignore*/
 		float: left;
+
+		.block-editor-block-toolbar {
+			right: auto;
+			left: $block-padding;
+		}
 	}
 
 	.block-editor-block-list__block[data-align="right"] & {
@@ -829,32 +724,13 @@
 		@supports (position: sticky) {
 			min-width: 0;
 		}
-	}
 
-	.block-editor-block-list__block[data-align="left"] &,
-	.block-editor-block-list__block[data-align="right"] & {
-		// Move the block toolbar out of the flow using translate, but less for floats.
-		transform: translateY(-$block-padding -$border-width);
-	}
-}
-
-// Position the block toolbar when contextual.
-.block-editor-block-contextual-toolbar .block-editor-block-toolbar {
-	width: 100%;
-
-	@include break-small() {
-		width: auto;
-
-		// Hide right border on desktop, where the .components-toolbar instead has a right border.
-		border-right: none;
-
-		// This prevents floats from messing up the position of the block toolbar on floats-adjacent blocks when selected.
-		position: absolute;
-		left: $border-width;
-		top: $border-width;
+		.block-editor-block-toolbar {
+			left: auto;
+			right: $block-padding;
+		}
 	}
 }
-
 
 /**
  * Block Label for Navigation/Selection Mode
