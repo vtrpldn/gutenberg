@@ -24,7 +24,6 @@ describe( 'Blocks raw handling', () => {
 	beforeAll( () => {
 		// Load all hooks that modify blocks
 		require( '../../packages/editor/src/hooks' );
-		registerCoreBlocks();
 		registerBlockType( 'test/gallery', {
 			title: 'Test Gallery',
 			category: 'common',
@@ -57,6 +56,28 @@ describe( 'Blocks raw handling', () => {
 			},
 			save: () => null,
 		} );
+
+		registerBlockType( 'test/iframe-handler', {
+			title: 'Test iframe Handler',
+			category: 'common',
+			transforms: {
+				from: [
+					{
+						type: 'raw',
+						isMatch: ( node ) => {
+							return node.nodeName === 'FIGURE' &&
+								node.innerHTML === '<iframe src="https://wordpress.org/"></iframe>';
+						},
+						transform: () => {
+							return "you can't iframe wordpress.org";
+						},
+					},
+				],
+			},
+			save: () => null,
+		} );
+
+		registerCoreBlocks();
 	} );
 
 	it( 'should filter inline content', () => {
@@ -260,6 +281,16 @@ describe( 'Blocks raw handling', () => {
 			plainText: block,
 			mode: 'AUTO',
 		} ) ) ).toBe( block );
+	} );
+
+	it( 'should allow iframes to be transformed', () => {
+		const filtered = pasteHandler( {
+			HTML: '<iframe src="https://wordpress.org/"></iframe>\n<br>',
+			mode: 'AUTO',
+		} ).join( '' );
+
+		expect( filtered ).toBe( "you can't iframe wordpress.org" );
+		expect( console ).toHaveLogged();
 	} );
 
 	describe( 'pasteHandler', () => {
