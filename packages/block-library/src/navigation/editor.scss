@@ -32,7 +32,8 @@
 		padding-right: 0;
 		margin-left: 0;
 		margin-right: 0;
-		margin-bottom: 1em; // Useful for when items wrap.
+		margin-bottom: 0; // Useful for when items wrap.
+		min-height: 46px;
 	}
 
 	// 3. Remove margins on subsequent Edit container.
@@ -80,6 +81,13 @@
 .wp-block-navigation {
 	display: flex;
 	flex-wrap: wrap;
+}
+
+.wp-block-navigation {
+	min-height: 60px;
+	padding-top: 7px;
+	padding-bottom: 7px;
+	align-items: center;
 }
 
 .wp-block-navigation__inserter-content {
