@@ -114,7 +114,10 @@ function DropdownMenu( {
 						aria-expanded={ isOpen }
 						label={ label }
 					>
-						{ ( ! icon || hasArrowIndicator ) && <span className="components-dropdown-menu__indicator" /> }
+						{ mergedToggleProps.children }
+						{ ( ! icon || hasArrowIndicator ) && (
+							<span className="components-dropdown-menu__indicator" />
+						) }
 					</IconButton>
 				);
 			} }
