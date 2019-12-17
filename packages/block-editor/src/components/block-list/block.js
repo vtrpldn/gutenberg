@@ -22,7 +22,7 @@ import {
 	isUnmodifiedDefaultBlock,
 	getUnregisteredTypeHandlerName,
 } from '@wordpress/blocks';
-import { KeyboardShortcuts, withFilters } from '@wordpress/components';
+import { KeyboardShortcuts, withFilters, Popover } from '@wordpress/components';
 import { __, sprintf } from '@wordpress/i18n';
 import {
 	withDispatch,
@@ -578,31 +578,38 @@ function BlockListBlock( {
 					/>
 				) }
 				{ shouldRenderMovers && ( moverDirection === 'vertical' ) && blockMover }
-				{ shouldShowBreadcrumb && (
-					<BlockBreadcrumb
-						clientId={ clientId }
-						ref={ breadcrumb }
-					/>
-				) }
-
 				{ ( isCapturingDescendantToolbars ) && (
 					// A slot made available on all ancestors of the selected Block
 					// to allow child Blocks to render their toolbars into the DOM
 					// of the appropriate parent.
 					<ChildToolbarSlot />
 				) }
-
-				{ ( ! ( hasAncestorCapturingToolbars ) ) && ( shouldShowContextualToolbar || isForcingContextualToolbar.current ) && renderBlockContextualToolbar() }
-
-				{ ( hasAncestorCapturingToolbars ) && ( shouldShowContextualToolbar || isForcingContextualToolbar.current ) && (
-					// If the parent Block is set to consume toolbars of the child Blocks
-					// then render the child Block's toolbar into the Slot provided
-					// by the parent.
-					<ChildToolbar>
-						{ renderBlockContextualToolbar() }
-					</ChildToolbar>
+				{ ( shouldShowBreadcrumb || shouldShowContextualToolbar || isForcingContextualToolbar.current ) && (
+					<Popover
+						noArrow
+						position="top right left"
+						focusOnMount={ false }
+						anchorRef={ blockNodeRef.current }
+						className="block-editor-block-list__block__popover"
+						__unstableSticky={ isPartOfMultiSelection ? '.wp-block.is-multi-selected' : true }
+					>
+						{ ! hasAncestorCapturingToolbars && ( shouldShowContextualToolbar || isForcingContextualToolbar.current ) && renderBlockContextualToolbar() }
+						{ hasAncestorCapturingToolbars && ( shouldShowContextualToolbar || isForcingContextualToolbar.current ) && (
+							// If the parent Block is set to consume toolbars of the child Blocks
+							// then render the child Block's toolbar into the Slot provided
+							// by the parent.
+							<ChildToolbar>
+								{ renderBlockContextualToolbar() }
+							</ChildToolbar>
+						) }
+						{ shouldShowBreadcrumb && (
+							<BlockBreadcrumb
+								clientId={ clientId }
+								ref={ breadcrumb }
+							/>
+						) }
+					</Popover>
 				) }
-
 				{
 					! isNavigationMode &&
 					! shouldShowContextualToolbar &&

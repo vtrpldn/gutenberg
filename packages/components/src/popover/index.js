@@ -21,8 +21,8 @@ import withConstrainedTabbing from '../higher-order/with-constrained-tabbing';
 import PopoverDetectOutside from './detect-outside';
 import IconButton from '../icon-button';
 import ScrollLock from '../scroll-lock';
-import IsolatedEventContainer from '../isolated-event-container';
 import { Slot, Fill, Consumer } from '../slot-fill';
+import IsolatedEventContainer from '../isolated-event-container';
 import Animate from '../animate';
 
 const FocusManaged = withConstrainedTabbing( withFocusReturn( ( { children } ) => children ) );
@@ -239,6 +239,7 @@ const Popover = ( {
 	animate = true,
 	onClickOutside,
 	onFocusOutside,
+	__unstableSticky,
 	/* eslint-enable no-unused-vars */
 	...contentProps
 } ) => {
@@ -297,7 +298,7 @@ const Popover = ( {
 				yAxis,
 				contentHeight,
 				contentWidth,
-			} = computePopoverPosition( anchor, contentRect.current, position );
+			} = computePopoverPosition( anchor, contentRect.current, position, __unstableSticky, anchorRef );
 
 			setClass( containerEl, 'is-without-arrow', noArrow || ( xAxis === 'center' && yAxis === 'middle' ) );
 			setAttribute( containerEl, 'data-x-axis', xAxis );
@@ -351,6 +352,7 @@ const Popover = ( {
 		anchorVerticalBuffer,
 		anchorHorizontalBuffer,
 		position,
+		__unstableSticky,
 	] );
 
 	useFocusContentOnMount( focusOnMount, contentRef );
