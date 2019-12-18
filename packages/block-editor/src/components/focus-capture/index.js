@@ -43,6 +43,8 @@ function FocusCaptureElement( { reverse } ) {
 		<div
 			tabIndex={ clientId && ! isNavigationMode ? '0' : undefined }
 			onFocus={ onFocus }
+			// Needs to be positioned within the viewport, so focus to this
+			// element does not scroll the page.
 			style={ { position: 'fixed' } }
 		/>
 	);
@@ -50,7 +52,10 @@ function FocusCaptureElement( { reverse } ) {
 
 /**
  * Renders focus capturing areas before and after `children` to redirect focus
- * to the selected block if not in navigation mode.
+ * to the selected block if not in Navigation mode. This complements the
+ * behaviour of skipping content when tabbing out of the blocks in Edit mode. It
+ * ensures that controls in the toolbar and sidebar can easily be accessed, and
+ * also that the block selection is not lost.
  *
  * @param {Object} props          Component props.
  * @param {Array}  props.children Children to render.

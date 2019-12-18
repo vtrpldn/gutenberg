@@ -342,6 +342,12 @@ function BlockListBlock( {
 				}
 				break;
 			case TAB:
+				// In Edit mode, Tab should focus the first tabbable element
+				// after the content, which is the sidebar (with block controls)
+				// and Shift+Tab should focus the first tabbable element before
+				// the content, which is the block toolbar.
+				// Arrow keys can be used, and Tab and arrow keys can be used in
+				// Navigation mode (press Esc), to navigate through blocks.
 				if ( ( isSelected || isFirstMultiSelected ) && isEditMode ) {
 					if ( shiftKey ) {
 						if ( target === wrapper.current ) {
@@ -609,6 +615,9 @@ function BlockListBlock( {
 					<Popover
 						noArrow
 						animate={ false }
+						// Position above the anchor, pop out towards the right,
+						// and position in the left corner.
+						// To do: refactor `Popover` to make this prop clearer.
 						position="top right left"
 						focusOnMount={ false }
 						anchorRef={ blockNodeRef.current }

@@ -228,7 +228,10 @@ Undocumented declaration.
 <a name="FocusCapture" href="#FocusCapture">#</a> **FocusCapture**
 
 Renders focus capturing areas before and after `children` to redirect focus
-to the selected block if not in navigation mode.
+to the selected block if not in Navigation mode. This complements the
+behaviour of skipping content when tabbing out of the blocks in Edit mode. It
+ensures that controls in the toolbar and sidebar can easily be accessed, and
+also that the block selection is not lost.
 
 _Parameters_
 

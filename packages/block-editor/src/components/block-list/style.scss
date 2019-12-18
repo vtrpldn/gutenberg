@@ -1005,6 +1005,8 @@
 	border: none;
 	box-shadow: none;
 	overflow-y: visible;
+	// Allow clicks through the wrapper for the block movers, which may be
+	// positioned next to the toolbar.
 	pointer-events: none;
 
 	> * {
