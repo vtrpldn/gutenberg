@@ -401,7 +401,7 @@ function BlockListBlock( {
 	const isHovered = isBlockHovered && ! isPartOfMultiSelection;
 	const blockType = getBlockType( name );
 
-	const blockAriaLabel = getAccessibleBlockLabel( blockType, attributes, index + 1 );
+	const blockAriaLabel = getAccessibleBlockLabel( blockType, attributes, index + 1, moverDirection );
 	const isUnregisteredBlock = name === getUnregisteredTypeHandlerName();
 
 	// If the block is selected and we're typing the block should not appear.

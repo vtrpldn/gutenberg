@@ -155,17 +155,18 @@ export function getBlockLabel( blockType, attributes, context = 'visual' ) {
  * than the visual label and includes the block title and the value of the
  * `getLabel` function if it's specified.
  *
- * @param {Object}  blockType  The block type.
- * @param {Object}  attributes The values of the block's attributes.
- * @param {?number} row        The row of the block in the block list.
+ * @param {Object}  blockType              The block type.
+ * @param {Object}  attributes             The values of the block's attributes.
+ * @param {?number} position               The position of the block in the block list.
+ * @param {string}  [direction='vertical'] The direction of the block layout.
  *
  * @return {string} The block label.
  */
-export function getAccessibleBlockLabel( blockType, attributes, row ) {
+export function getAccessibleBlockLabel( blockType, attributes, position, direction = 'vertical' ) {
 	// `title` is already localized, `label` is a user-supplied value.
 	const { title } = blockType;
 	const label = getBlockLabel( blockType, attributes, 'accessibility' );
-	const hasRow = row !== undefined;
+	const hasPosition = position !== undefined;
 
 	// getBlockLabel returns the block title as a fallback when there's no label,
 	// if it did return the title, this function needs to avoid adding the
@@ -173,13 +174,13 @@ export function getAccessibleBlockLabel( blockType, attributes, row ) {
 	// handle that.
 	const hasLabel = label && label !== title;
 
-	if ( hasRow ) {
+	if ( hasPosition && direction === 'vertical' ) {
 		if ( hasLabel ) {
 			return sprintf(
 				/* translators: accessibility text. %1: The block title, %2: The block row number, %3: The block label.. */
 				__( '%1$s Block. Row %2$d. %3$s' ),
 				title,
-				row,
+				position,
 				label
 			);
 		}
@@ -188,7 +189,24 @@ export function getAccessibleBlockLabel( blockType, attributes, row ) {
 			/* translators: accessibility text. %s: The block title, %d The block row number. */
 			__( '%s Block. Row %d' ),
 			title,
-			row,
+			position,
+		);
+	} else if ( hasPosition && direction === 'horizontal' ) {
+		if ( hasLabel ) {
+			return sprintf(
+				/* translators: accessibility text. %1: The block title, %2: The block column number, %3: The block label.. */
+				__( '%1$s Block. Column %2$d. %3$s' ),
+				title,
+				position,
+				label
+			);
+		}
+
+		return sprintf(
+			/* translators: accessibility text. %s: The block title, %d The block column number. */
+			__( '%s Block. Column %d' ),
+			title,
+			position,
 		);
 	}
 
