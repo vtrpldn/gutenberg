@@ -5,8 +5,16 @@ import {
 	createNewPost,
 	insertBlock,
 	pressKeyWithModifier,
-	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
+
+async function getActiveLabel() {
+	return await page.evaluate( () => {
+		return (
+			document.activeElement.getAttribute( 'aria-label' ) ||
+			document.activeElement.innerHTML
+		);
+	} );
+}
 
 const navigateToContentEditorTop = async () => {
 	// Use 'Ctrl+`' to return to the top of the editor
@@ -16,58 +24,55 @@ const navigateToContentEditorTop = async () => {
 
 const tabThroughParagraphBlock = async ( paragraphText ) => {
 	// Tab through the block toolbar.
-	await pressKeyTimes( 'Tab', 8 );
+	await tabThroughBlockToolbar();
 
-	// The block external focusable wrapper has focus
-	const isFocusedParagraphBlock = await page.evaluate(
-		() => document.activeElement.dataset.type
-	);
-	await expect( isFocusedParagraphBlock ).toEqual( 'core/paragraph' );
-
-	// Tab causes 'add block' button to receive focus
 	await page.keyboard.press( 'Tab' );
-	const isFocusedParagraphInserterToggle = await page.evaluate( () =>
-		document.activeElement.classList.contains( 'block-editor-inserter__toggle' )
-	);
-	await expect( isFocusedParagraphInserterToggle ).toBe( true );
+	await expect( await getActiveLabel() ).toBe( 'Block: Paragraph' );
+
+	await page.keyboard.press( 'Tab' );
+	await expect( await getActiveLabel() ).toBe( 'Add block' );
 
 	await tabThroughBlockMoverControl();
 
-	// Tab causes the paragraph content to receive focus
 	await page.keyboard.press( 'Tab' );
-	const isFocusedParagraphContent = await page.evaluate(
-		() => document.activeElement.contentEditable
-	);
-	// The value of 'contentEditable' should be the string 'true'
-	await expect( isFocusedParagraphContent ).toBe( 'true' );
+	await expect( await getActiveLabel() ).toBe( 'Paragraph block' );
+	await expect( await page.evaluate( () =>
+		document.activeElement.innerHTML
+	) ).toBe( paragraphText );
 
-	const paragraphEditableContent = await page.evaluate(
-		() => document.activeElement.innerHTML
-	);
-	await expect( paragraphEditableContent ).toBe( paragraphText );
-
-	// Tab causes 'Open publish panel' button to receive focus.
 	await page.keyboard.press( 'Tab' );
-	const isFocusedPublishPanelButton = await page.evaluate( () =>
-		document.activeElement.classList.contains( 'edit-post-toggle-publish-panel__button' )
-	);
-	await expect( isFocusedPublishPanelButton ).toBe( true );
+	await expect( await getActiveLabel() ).toBe( 'Open publish panel' );
 };
 
 const tabThroughBlockMoverControl = async () => {
-	// Tab to focus on the 'move up' control
 	await page.keyboard.press( 'Tab' );
-	const isFocusedMoveUpControl = await page.evaluate( () =>
-		document.activeElement.classList.contains( 'block-editor-block-mover__control' )
-	);
-	await expect( isFocusedMoveUpControl ).toBe( true );
+	await expect( await getActiveLabel() ).toBe( 'Move up' );
 
-	// Tab to focus on the 'move down' control
 	await page.keyboard.press( 'Tab' );
-	const isFocusedMoveDownControl = await page.evaluate( () =>
-		document.activeElement.classList.contains( 'block-editor-block-mover__control' )
-	);
-	await expect( isFocusedMoveDownControl ).toBe( true );
+	await expect( await getActiveLabel() ).toBe( 'Move down' );
+};
+
+const tabThroughBlockToolbar = async () => {
+	await page.keyboard.press( 'Tab' );
+	await expect( await getActiveLabel() ).toBe( 'Change block type or style' );
+
+	await page.keyboard.press( 'Tab' );
+	await expect( await getActiveLabel() ).toBe( 'Change text alignment' );
+
+	await page.keyboard.press( 'Tab' );
+	await expect( await getActiveLabel() ).toBe( 'Bold' );
+
+	await page.keyboard.press( 'Tab' );
+	await expect( await getActiveLabel() ).toBe( 'Italic' );
+
+	await page.keyboard.press( 'Tab' );
+	await expect( await getActiveLabel() ).toBe( 'Link' );
+
+	await page.keyboard.press( 'Tab' );
+	await expect( await getActiveLabel() ).toBe( 'More rich text controls' );
+
+	await page.keyboard.press( 'Tab' );
+	await expect( await getActiveLabel() ).toBe( 'More options' );
 };
 
 describe( 'Order of block keyboard navigation', () => {
