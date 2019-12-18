@@ -342,7 +342,7 @@ function BlockListBlock( {
 				}
 				break;
 			case TAB:
-				if ( isSelected && isEditMode ) {
+				if ( ( isSelected || isFirstMultiSelected ) && isEditMode ) {
 					if ( shiftKey ) {
 						if ( target === wrapper.current ) {
 							const editorElement = wrapper.current.parentElement.closest( '[tabindex]' );
