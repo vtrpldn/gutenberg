@@ -20,7 +20,9 @@ function selector( select ) {
 	};
 }
 
-function FocusCaptureElement( { clientId, reverse } ) {
+function FocusCaptureElement( { reverse } ) {
+	const { clientId, isNavigationMode } = useSelect( selector, [] );
+
 	function onFocus() {
 		const wrapper = getBlockFocusableWrapper( clientId );
 
@@ -34,7 +36,7 @@ function FocusCaptureElement( { clientId, reverse } ) {
 
 	return (
 		<div
-			tabIndex="0"
+			tabIndex={ clientId && ! isNavigationMode ? '0' : undefined }
 			onFocus={ onFocus }
 			style={ { position: 'fixed' } }
 		/>
@@ -42,17 +44,11 @@ function FocusCaptureElement( { clientId, reverse } ) {
 }
 
 export default function FocusCapture( { children } ) {
-	const { clientId, isNavigationMode } = useSelect( selector, [] );
-
-	if ( ! clientId || isNavigationMode ) {
-		return children;
-	}
-
 	return (
 		<>
-			<FocusCaptureElement clientId={ clientId } />
+			<FocusCaptureElement />
 			{ children }
-			<FocusCaptureElement clientId={ clientId } reverse />
+			<FocusCaptureElement reverse />
 		</>
 	);
 }
