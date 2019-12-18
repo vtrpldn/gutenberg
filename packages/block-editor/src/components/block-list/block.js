@@ -608,6 +608,7 @@ function BlockListBlock( {
 				{ ( shouldShowBreadcrumb || shouldShowContextualToolbar || isForcingContextualToolbar.current ) && (
 					<Popover
 						noArrow
+						animate={ false }
 						position="top right left"
 						focusOnMount={ false }
 						anchorRef={ blockNodeRef.current }
