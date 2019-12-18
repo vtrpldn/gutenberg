@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { without } from 'lodash';
+import { without, first, last } from 'lodash';
 
 /**
  * Internal dependencies
@@ -134,16 +134,46 @@ export function find( context ) {
 		.reduce( createStatefulCollapseRadioGroup(), [] );
 }
 
+/**
+ * Given an element, find the preceding tabbable elemnt.
+ *
+ * @param {Element} element The element before which to look.
+ */
 export function findPrevious( element ) {
 	const focusables = findFocusable( document.body );
 	const index = focusables.indexOf( element );
 
+	// Remove all focusables after and including `element`.
 	focusables.length = index;
 
-	return focusables
+	const remaining = focusables
 		.filter( isTabbableIndex )
 		.map( mapElementToObjectTabbable )
 		.sort( compareObjectTabbables )
 		.map( mapObjectTabbableToElement )
 		.reduce( createStatefulCollapseRadioGroup(), [] );
+
+	return last( remaining );
+}
+
+/**
+ * Given an element, find the next tabbable elemnt.
+ *
+ * @param {Element} element The element after which to look.
+ */
+export function findNext( element ) {
+	const focusables = findFocusable( document.body );
+	const index = focusables.indexOf( element );
+
+	// Remove all focusables before and inside `element`.
+	const remaining = focusables
+		.slice( index + 1 )
+		.filter( ( node ) => ! element.contains( node ) )
+		.filter( isTabbableIndex )
+		.map( mapElementToObjectTabbable )
+		.sort( compareObjectTabbables )
+		.map( mapObjectTabbableToElement )
+		.reduce( createStatefulCollapseRadioGroup(), [] );
+
+	return first( remaining );
 }

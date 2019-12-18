@@ -227,7 +227,17 @@ Undocumented declaration.
 
 <a name="FocusCapture" href="#FocusCapture">#</a> **FocusCapture**
 
-Undocumented declaration.
+Renders focus capturing areas before and after `children` to redirect focus
+to the selected block if not in navigation mode.
+
+_Parameters_
+
+-   _props_ `Object`: Component props.
+-   _props.children_ `Array`: Children to render.
+
+_Returns_
+
+-   `WPElement`: The element tree.
 
 <a name="FontSizePicker" href="#FontSizePicker">#</a> **FontSizePicker**
 

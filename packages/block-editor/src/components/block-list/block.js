@@ -342,26 +342,23 @@ function BlockListBlock( {
 				}
 				break;
 			case TAB:
-				if (
-					shiftKey &&
-					isSelected &&
-					isEditMode &&
-					target === wrapper.current
-				) {
-					last( focus.tabbable.findPrevious( document.querySelector( '.edit-post-visual-editor' ) ) ).focus();
-					event.preventDefault();
-				}
+				if ( isSelected && isEditMode ) {
+					if ( shiftKey ) {
+						if ( target === wrapper.current ) {
+							const editorElement = wrapper.current.parentElement.closest( '[tabindex]' );
+							const beforeEditorElement = focus.tabbable.findPrevious( editorElement );
+							beforeEditorElement.focus();
+							event.preventDefault();
+						}
+					} else {
+						const tabbables = focus.tabbable.find( wrapper.current );
 
-				if (
-					! shiftKey &&
-					isSelected &&
-					isEditMode
-				) {
-					const tabbables = focus.tabbable.find( wrapper.current );
-
-					if ( target === last( tabbables ) ) {
-						document.querySelector( '.edit-post-toggle-publish-panel__button' ).focus();
-						event.preventDefault();
+						if ( target === last( tabbables ) ) {
+							const editorElement = wrapper.current.parentElement.closest( '[tabindex]' );
+							const afterEditorElement = focus.tabbable.findNext( editorElement );
+							afterEditorElement.focus();
+							event.preventDefault();
+						}
 					}
 				}
 				break;

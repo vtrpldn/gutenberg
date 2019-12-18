@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { last } from 'lodash';
+
+/**
  * WordPress dependencies
  */
 import { useSelect } from '@wordpress/data';
@@ -28,7 +33,7 @@ function FocusCaptureElement( { reverse } ) {
 
 		if ( reverse ) {
 			const tabbables = focus.tabbable.find( wrapper );
-			tabbables[ tabbables.length - 1 ].focus();
+			last( tabbables ).focus();
 		} else {
 			wrapper.focus();
 		}
@@ -43,6 +48,15 @@ function FocusCaptureElement( { reverse } ) {
 	);
 }
 
+/**
+ * Renders focus capturing areas before and after `children` to redirect focus
+ * to the selected block if not in navigation mode.
+ *
+ * @param {Object} props          Component props.
+ * @param {Array}  props.children Children to render.
+ *
+ * @return {WPElement} The element tree.
+ */
 export default function FocusCapture( { children } ) {
 	return (
 		<>
