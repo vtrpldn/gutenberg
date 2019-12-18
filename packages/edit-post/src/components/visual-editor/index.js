@@ -15,6 +15,7 @@ import {
 	MultiSelectScrollIntoView,
 	__experimentalBlockSettingsMenuFirstItem,
 	__experimentalBlockSettingsMenuPluginsExtension,
+	FocusCapture,
 } from '@wordpress/block-editor';
 
 /**
@@ -32,8 +33,10 @@ function VisualEditor() {
 				<WritingFlow>
 					<ObserveTyping>
 						<CopyHandler>
-							<PostTitle />
-							<BlockList />
+							<FocusCapture>
+								<PostTitle />
+								<BlockList />
+							</FocusCapture>
 						</CopyHandler>
 					</ObserveTyping>
 				</WritingFlow>

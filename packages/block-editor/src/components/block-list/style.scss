@@ -858,9 +858,6 @@
 			right: auto;
 			box-shadow: none;
 
-			// Move the block toolbar out of the flow using translate.
-			transform: translateY(-$block-toolbar-height -$block-padding -$border-width);
-
 			// IE11 does not support `position: sticky`.
 			@supports (position: sticky) {
 				position: sticky;

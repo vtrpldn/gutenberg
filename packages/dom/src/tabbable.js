@@ -133,3 +133,17 @@ export function find( context ) {
 		.map( mapObjectTabbableToElement )
 		.reduce( createStatefulCollapseRadioGroup(), [] );
 }
+
+export function findPrevious( element ) {
+	const focusables = findFocusable( document.body );
+	const index = focusables.indexOf( element );
+
+	focusables.length = index;
+
+	return focusables
+		.filter( isTabbableIndex )
+		.map( mapElementToObjectTabbable )
+		.sort( compareObjectTabbables )
+		.map( mapObjectTabbableToElement )
+		.reduce( createStatefulCollapseRadioGroup(), [] );
+}

@@ -14,7 +14,7 @@ import {
 	isTextField,
 	placeCaretAtHorizontalEdge,
 } from '@wordpress/dom';
-import { BACKSPACE, DELETE, ENTER, ESCAPE } from '@wordpress/keycodes';
+import { BACKSPACE, DELETE, ENTER, ESCAPE, TAB } from '@wordpress/keycodes';
 import {
 	getBlockType,
 	getSaveElement,
@@ -304,7 +304,7 @@ function BlockListBlock( {
 	 * @param {KeyboardEvent} event Keydown event.
 	 */
 	const onKeyDown = ( event ) => {
-		const { keyCode, target } = event;
+		const { keyCode, target, shiftKey } = event;
 
 		// ENTER/BACKSPACE Shortcuts are only available if the wrapper is focused
 		// and the block is not locked.
@@ -339,6 +339,30 @@ function BlockListBlock( {
 				) {
 					setNavigationMode( true );
 					wrapper.current.focus();
+				}
+				break;
+			case TAB:
+				if (
+					shiftKey &&
+					isSelected &&
+					isEditMode &&
+					target === wrapper.current
+				) {
+					last( focus.tabbable.findPrevious( document.querySelector( '.edit-post-visual-editor' ) ) ).focus();
+					event.preventDefault();
+				}
+
+				if (
+					! shiftKey &&
+					isSelected &&
+					isEditMode
+				) {
+					const tabbables = focus.tabbable.find( wrapper.current );
+
+					if ( target === last( tabbables ) ) {
+						document.querySelector( '.edit-post-toggle-publish-panel__button' ).focus();
+						event.preventDefault();
+					}
 				}
 				break;
 		}
@@ -592,6 +616,7 @@ function BlockListBlock( {
 						anchorRef={ blockNodeRef.current }
 						className="block-editor-block-list__block__popover"
 						__unstableSticky={ isPartOfMultiSelection ? '.wp-block.is-multi-selected' : true }
+						__unstableSlotName="block-toolbar"
 					>
 						{ ! hasAncestorCapturingToolbars && ( shouldShowContextualToolbar || isForcingContextualToolbar.current ) && renderBlockContextualToolbar() }
 						{ hasAncestorCapturingToolbars && ( shouldShowContextualToolbar || isForcingContextualToolbar.current ) && (

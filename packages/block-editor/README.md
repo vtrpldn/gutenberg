@@ -225,6 +225,10 @@ _Returns_
 
 Undocumented declaration.
 
+<a name="FocusCapture" href="#FocusCapture">#</a> **FocusCapture**
+
+Undocumented declaration.
+
 <a name="FontSizePicker" href="#FontSizePicker">#</a> **FontSizePicker**
 
 Undocumented declaration.
