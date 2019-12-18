@@ -14,6 +14,7 @@ const modules = [
 	'core/block-editor',
 	'core/editor',
 	'core/edit-post',
+	'core/keyboard-shortcuts',
 	'core/notices',
 	'core/nux',
 	'core/viewport',
