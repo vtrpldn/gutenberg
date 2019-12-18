@@ -125,8 +125,15 @@ function compareObjectTabbables( a, b ) {
 	return aTabIndex - bTabIndex;
 }
 
-export function find( context ) {
-	return findFocusable( context )
+/**
+ * Givin focusable elements, filters out tabbable element.
+ *
+ * @param {Array} focusables Focusable elements to filter.
+ *
+ * @return {Array} Tabbable elements.
+ */
+function filterTabbable( focusables ) {
+	return focusables
 		.filter( isTabbableIndex )
 		.map( mapElementToObjectTabbable )
 		.sort( compareObjectTabbables )
@@ -134,46 +141,40 @@ export function find( context ) {
 		.reduce( createStatefulCollapseRadioGroup(), [] );
 }
 
+export function find( context ) {
+	return filterTabbable( findFocusable( context ) );
+}
+
 /**
- * Given an element, find the preceding tabbable elemnt.
+ * Given a focusable element, find the preceding tabbable element.
  *
- * @param {Element} element The element before which to look.
+ * @param {Element} element The focusable element before which to look. Defaults
+ *                          to the active element.
  */
-export function findPrevious( element ) {
+export function findPrevious( element = document.activeElement ) {
 	const focusables = findFocusable( document.body );
 	const index = focusables.indexOf( element );
 
 	// Remove all focusables after and including `element`.
 	focusables.length = index;
 
-	const remaining = focusables
-		.filter( isTabbableIndex )
-		.map( mapElementToObjectTabbable )
-		.sort( compareObjectTabbables )
-		.map( mapObjectTabbableToElement )
-		.reduce( createStatefulCollapseRadioGroup(), [] );
-
-	return last( remaining );
+	return last( filterTabbable( focusables ) );
 }
 
 /**
- * Given an element, find the next tabbable elemnt.
+ * Given a focusable element, find the next tabbable element.
  *
- * @param {Element} element The element after which to look.
+ * @param {Element} element The focusable element after which to look. Defaults
+ *                          to the active element.
  */
-export function findNext( element ) {
+export function findNext( element = document.activeElement ) {
 	const focusables = findFocusable( document.body );
 	const index = focusables.indexOf( element );
 
 	// Remove all focusables before and inside `element`.
 	const remaining = focusables
 		.slice( index + 1 )
-		.filter( ( node ) => ! element.contains( node ) )
-		.filter( isTabbableIndex )
-		.map( mapElementToObjectTabbable )
-		.sort( compareObjectTabbables )
-		.map( mapObjectTabbableToElement )
-		.reduce( createStatefulCollapseRadioGroup(), [] );
+		.filter( ( node ) => ! element.contains( node ) );
 
-	return first( remaining );
+	return first( filterTabbable( remaining ) );
 }
